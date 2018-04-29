@@ -2,10 +2,11 @@
  * Created by dongc_000 on 2018/4/28.
  */
 import React from 'react';
-import {Form, Icon, Input, Button, Card, Checkbox, message} from 'antd';
-import {login} from '../services/api'
+import {Form, Icon, Input, Button, Card, Checkbox, message, Menu, Dropdown, Select} from 'antd';
+import {login} from '../services/api';
 
 const FormItem = Form.Item;
+const Option = Select.Option;
 
 const Login = Form.create()(React.createClass({
   handleSubmit(e) {
@@ -13,12 +14,15 @@ const Login = Form.create()(React.createClass({
     this.props.form.validateFields((err, values) => {
       if(!err) {
         console.log('Received values of form:', values);
-        //console.log('user:',values.userName);
-        //console.log('password:',values.password);
-        login(values.userName, values.password).then(resp => {
+        login(values.userName, values.password, values.role).then(resp => {
           console.log(resp.data);
           if(resp.data.entity.result === 'ok') {
+            console.log("id:",resp.data.entity.data.user_id);
+            console.log("name:",resp.data.entity.data.user_name);
+            console.log("role",resp.data.entity.data.user_roles);
             message.success("connect successfully!");
+          } else {
+            message.warning("登录失败！",4);
           }
         })
       }
@@ -46,14 +50,20 @@ const Login = Form.create()(React.createClass({
               )}
             </FormItem>
             <FormItem>
-              {getFieldDecorator('remember', {
-                valuePropName: 'checked',
-                initialValue: true,
+              {getFieldDecorator('role', {
+                rules: [{required: true, message:'请选择登录身份！'}],
               })(
-                <Checkbox style={{marginRight:110}}>记住我</Checkbox>
+                <Select placeholder="please choose your role">
+                  <Option value="2">管理员</Option>
+                  <Option value="3">销售</Option>
+                  <Option value="4">进货</Option>
+                  <Option value="5">仓库</Option>
+                  <Option value="6">加工</Option>
+                </Select>
               )}
-              <Button type="primary" htmlType="submit">登陆</Button>
-
+            </FormItem>
+            <FormItem>
+              <Button style={{width:250}} type="primary" htmlType="submit" onClick={this.handleSubmit}>登录</Button>
             </FormItem>
           </Form>
         </Card>
