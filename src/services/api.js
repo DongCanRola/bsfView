@@ -1,4 +1,5 @@
 import { post, get } from '../utils/request';
+import md5 from 'js-md5';
 
 export async function MonitorGetAll() {
   return get("/api/monitor/get_all")
@@ -12,17 +13,13 @@ export async function AuthSignIn(body) {
   return post("api/auth/login",body)
 }
 
-export async function login(userName,password) {
+export async function login(userName,password,role) {
   var headers = new Headers();
   headers.append('Content-Type', "application/json");
   headers.append('Accept', 'application/json');
   headers.set("password", password);
   headers.set("userName", userName);
-  console.log(userName);
-  console.log(password);
-  //addEmployee();
-  //getTest()
-  //getProduceApplicationList();
+  headers.set("role",role);
   return post("/api/login",headers);
 }
 

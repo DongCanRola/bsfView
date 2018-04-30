@@ -3,7 +3,7 @@ import {Menu, Icon, Input, Modal, message, Form} from 'antd';
 import screenfull from 'screenfull';
 import {browserHistory} from 'dva/router'
 import md5 from 'js-md5'
-import {modifyPassword} from "../../services/adminApi";
+//import {modifyPassword} from "../../services/adminApi";
 
 const MenuItemGroup = Menu.ItemGroup;
 
@@ -19,9 +19,9 @@ var HeaderInfo = React.createClass({
 
   getInitialState: function () {
     return {
-      userName: window.sessionStorage.getItem("userName"),
-      userId: window.sessionStorage.getItem("employeeId"),
-      position:window.sessionStorage.getItem("position"),
+      userName: window.sessionStorage.getItem("realName"),
+      userId: window.sessionStorage.getItem("userId"),
+      position:window.sessionStorage.getItem("currentRole"),
       password: '',
       oldPassword: '',
       passwordConfirm: '',
@@ -50,22 +50,25 @@ var HeaderInfo = React.createClass({
       return;
     }
 
-    modifyPassword(this.state.userId, this.state.password).then(resp => {
-      console.log("返回的数据：", resp);
-      if (resp.data) {
-        message.success("修改密码成功,请您重新登录！", 2);
-        this.setState({modifyPassword: false});
-        this.logout();
-      }
-    }).catch(err => {
-      console.log(" 修改密码发生错误：", err)
-    })
+    /*
+     modifyPassword(this.state.userId, this.state.password).then(resp => {
+     console.log("返回的数据：", resp);
+     if (resp.data) {
+     message.success("修改密码成功,请您重新登录！", 2);
+     this.setState({modifyPassword: false});
+     this.logout();
+     }
+     }).catch(err => {
+     console.log(" 修改密码发生错误：", err)
+     })
+    */
 
   },
 
   logout: function () {
     console.log("点击退出登录");
-    window.sessionStorage.removeItem("token");
+    //window.sessionStorage.removeItem("token");
+    window.sessionStorage.clear();
     browserHistory.push("/login");
   },
 
@@ -104,9 +107,6 @@ var HeaderInfo = React.createClass({
           </Menu.Item>
 
           <Menu.Item key="1">
-            {/*<Badge count={25} overflowCount={2} style={{marginLeft: 10}}>*/}
-            {/*<Icon type="notification" />*/}
-            {/*</Badge>*/}
             <span style={{width: 60, marginRight: 10}}> {this.state.position}</span>
             <span>|</span>
             <span style={{width: 80, marginLeft: 10}}> {this.state.userName} ，欢迎你 </span>

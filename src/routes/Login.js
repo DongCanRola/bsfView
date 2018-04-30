@@ -3,7 +3,11 @@
  */
 import React from 'react';
 import {Form, Icon, Input, Button, Card, Checkbox, message, Menu, Dropdown, Select} from 'antd';
+import {browserHistory} from 'dva/router';
+import md5 from 'js-md5';
+
 import {login} from '../services/api';
+import {getPath} from './RouterHash';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -14,13 +18,26 @@ const Login = Form.create()(React.createClass({
     this.props.form.validateFields((err, values) => {
       if(!err) {
         console.log('Received values of form:', values);
-        login(values.userName, values.password, values.role).then(resp => {
+        let username = values.userName;
+        let password = md5(values.password);
+        let role = values.role;
+        login(username, password, role).then(resp => {
           console.log(resp.data);
           if(resp.data.entity.result === 'ok') {
-            console.log("id:",resp.data.entity.data.user_id);
-            console.log("name:",resp.data.entity.data.user_name);
-            console.log("role",resp.data.entity.data.user_roles);
-            message.success("connect successfully!");
+            //console.log("id:",resp.data.entity.data.user_id);
+            //console.log("name:",resp.data.entity.data.user_name);
+            //console.log("role",resp.data.entity.data.user_roles);
+            let realName = resp.data.entity.data.user_name;
+            let path = getPath(role);
+            if(path != null) {
+              window.sessionStorage.setItem("userId",username);
+              window.sessionStorage.setItem("realName",resp.data.entity.data.user_name);
+              window.sessionStorage.setItem("allRoles",resp.data.entity.data.user_roles);
+              window.sessionStorage.setItem("currentRole",role);
+              browserHistory.push(path);
+              message.success(realName+"，欢迎登录！", 4);
+            }
+
           } else {
             message.warning("登录失败！",4);
           }
@@ -59,6 +76,7 @@ const Login = Form.create()(React.createClass({
                   <Option value="4">进货</Option>
                   <Option value="5">仓库</Option>
                   <Option value="6">加工</Option>
+                  <Option value="7">财务</Option>
                 </Select>
               )}
             </FormItem>
