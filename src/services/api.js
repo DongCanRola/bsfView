@@ -23,6 +23,30 @@ export async function login(userName,password,role) {
   return post("/api/login",headers);
 }
 
+export async function getUsers() {
+  var headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  headers.append('Accept', 'application/json');
+  return get("/api/userList",headers);
+}
+
+export async function addUser(obj) {
+  var headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  headers.append('Accept', 'application/json');
+
+  var body = {
+    "user_name": obj.user_name,
+    "phone": obj.phone,
+    "qqnumber": obj.qqnumber,
+    "wechat": obj.wechat,
+    "email": obj.email,
+    "password": md5("123"),
+    "user_roles": obj.user_roles
+  }
+  return post("/api/addUser",headers,body);
+}
+
 function addEmployee(){
   var headers = new Headers();
   headers.append("Content-Type","application/json");

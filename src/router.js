@@ -5,6 +5,8 @@ import { Router, Route, Redirect, browserHistory, IndexRedirect} from 'dva/route
 import Login from './routes/Login';
 
 import Admin from './routes/Admin';
+import UserManagement from './components/admin/UserManagement';
+
 import Salesman from './routes/Salesman';
 import Buyer from './routes/Buyer';
 import WarehouseKeeper from './routes/WarehouseKeeper';
@@ -34,6 +36,7 @@ function RouterConfig({ history }) {
       <Route path="login" component={Login}/>
 
       <Route path="/admin" component={Admin} >
+        <Route path="/userManagement" component={UserManagement}/>
       </Route>
 
       <Route path="/salesman" component={Salesman}>

@@ -1,6 +1,110 @@
 /**
- * Created by lenovo on 2017/5/18.
+ * Created by dongc_000 on 2018/4/30.
  */
+
+const userList = [
+  {
+    title: "编号",
+    width: "7%",
+    dataIndex: "userId",
+    sorter: (a, b) => a.userId - b.userId,
+  },{
+    title: "管理员",
+    render:(record) => {
+      let show = "否";
+      for(let one of record.roles) {
+        if(one === 2) {
+          show = "是";
+        }
+      }
+      return(<span>{show}</span>);
+    },
+    width: "6%"
+  },{
+    title: "销售",
+    render:(record) => {
+      let show = "否";
+      for(let one of record.roles) {
+        if(one === 3) {
+          show = "是";
+        }
+      }
+      return(<span>{show}</span>);
+    },
+    width: "5%"
+  },{
+    title: "进货",
+    render:(record) => {
+      let show = "否";
+      for(let one of record.roles) {
+        if(one === 4) {
+          show = "是";
+        }
+      }
+      return(<span>{show}</span>);
+    },
+    width: "5%"
+  },{
+    title: "库管",
+    render:(record) => {
+      let show = "否";
+      for(let one of record.roles) {
+        if(one === 5) {
+          show = "是";
+        }
+      }
+      return(<span>{show}</span>);
+    },
+    width: "5%"
+  },{
+    title: "生产加工",
+    render:(record) => {
+      let show = "否";
+      for(let one of record.roles) {
+        if(one === 6) {
+          show = "是";
+        }
+      }
+      return(<span>{show}</span>);
+    },
+    width: "9%"
+  },{
+    title: "财务",
+    render:(record) => {
+      let show = "否";
+      for(let one of record.roles) {
+        if(one === 7) {
+          show = "是";
+        }
+      }
+      return(<span>{show}</span>);
+    },
+    width: "5%"
+  },{
+    title: "姓名",
+    dataIndex: "userName",
+    width: "8%",
+  }, {
+    title: "电话",
+    dataIndex: "phone",
+    width: "10%"
+  },{
+    title: "QQ",
+    dataIndex: "qq_number",
+    width: "10%"
+  },{
+    title: "微信",
+    dataIndex: "wechat",
+    width: "10%"
+  },{
+    title: "邮箱",
+    dataIndex: "email",
+    width: "20%"
+  }
+];
+export function userColumn() {
+  return userList;
+}
 
 const employeeList = [
   {
@@ -21,7 +125,7 @@ const employeeList = [
     dataIndex: "position",
     width: "20%"
   },{
-  title: "状态",
+    title: "状态",
     render:(record)=>{
       let show="";
       if(record.status==0){
@@ -34,7 +138,7 @@ const employeeList = [
       return(<span>{show}</span>);
     },
     width: "19%"
-}];
+  }];
 
 export  function employeeColumns(){
   return employeeList;
