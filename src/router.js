@@ -12,6 +12,9 @@ import SaleCustomerManagement from './components/sale/SaleCustomerManagement';
 import SaleOrderManagement from './components/sale/SaleOrderManagement';
 
 import Buyer from './routes/Buyer';
+import BuyCustomerManagement from './components/buy/BuyCustomerManagement';
+import BuyOrderManagement from './components/buy/BuyOrderManagement';
+
 import WarehouseKeeper from './routes/WarehouseKeeper';
 import Producer from './routes/Producer';
 import Accountant from './routes/Accountant';
@@ -48,7 +51,8 @@ function RouterConfig({ history }) {
       </Route>
 
       <Route path="/buyer" component={Buyer}>
-
+        <Route path="/buyCustomerManagement" component={BuyCustomerManagement}/>
+        <Route path="/buyOrderManagement" component={BuyOrderManagement}/>
       </Route>
 
       <Route path="/warehouseKeeper" component={WarehouseKeeper}>
