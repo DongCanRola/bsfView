@@ -55,9 +55,7 @@ const Admin =React.createClass({
                 key="contract"
                 title={<span><Icon type="scan" /><span className="nav-text">人员管理</span></span>}
               >
-                {
-                  <Menu.Item key="employee"><Link to="/userManagement">用户管理</Link></Menu.Item>
-                }
+                  <Menu.Item key="user"><Link to="/userManagement">用户管理</Link></Menu.Item>
               </SubMenu>
 
             </Menu>

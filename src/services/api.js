@@ -27,7 +27,7 @@ export async function getUsers() {
   var headers = new Headers();
   headers.append('Content-Type', "application/json");
   headers.append('Accept', 'application/json');
-  return get("/api/userList",headers);
+  return get("/api/user/list",headers);
 }
 
 export async function addUser(obj) {
@@ -44,7 +44,7 @@ export async function addUser(obj) {
     "password": md5("123"),
     "user_roles": obj.user_roles
   }
-  return post("/api/addUser",headers,body);
+  return post("/api/user/add",headers,body);
 }
 
 function addEmployee(){

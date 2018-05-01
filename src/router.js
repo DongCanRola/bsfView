@@ -8,6 +8,9 @@ import Admin from './routes/Admin';
 import UserManagement from './components/admin/UserManagement';
 
 import Salesman from './routes/Salesman';
+import SaleCustomerManagement from './components/sale/SaleCustomerManagement';
+import SaleOrderManagement from './components/sale/SaleOrderManagement';
+
 import Buyer from './routes/Buyer';
 import WarehouseKeeper from './routes/WarehouseKeeper';
 import Producer from './routes/Producer';
@@ -40,7 +43,8 @@ function RouterConfig({ history }) {
       </Route>
 
       <Route path="/salesman" component={Salesman}>
-
+        <Route path="/saleCustomerManagement" component={SaleCustomerManagement}/>
+        <Route path="/saleOrderManagement" component={SaleOrderManagement}/>
       </Route>
 
       <Route path="/buyer" component={Buyer}>

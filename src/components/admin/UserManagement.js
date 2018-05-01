@@ -131,7 +131,7 @@ export default class UserManagement extends React.Component {
         wechat: values.newWechat,
         email: values.newEmail,
         user_roles: [values.iniPosition]
-      }
+      };
       //console.log("new user:",obj);
       addUser(obj).then(resp => {
         console.log(resp.data.entity);

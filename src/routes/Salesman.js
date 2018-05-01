@@ -57,10 +57,8 @@ const Salesman =React.createClass({
                 key="contract"
                 title={<span><Icon type="scan" /><span className="nav-text">销售管理</span></span>}
               >
-                {
-                  <Menu.Item key="employee">客户管理</Menu.Item>
-                  //<Menu.Item key="employee"><Link to="employeeManagement">订单管理</Link></Menu.Item>
-                }
+                <Menu.Item key="saleCustomer"><Link to="/saleCustomerManagement">客户管理</Link></Menu.Item>
+                <Menu.Item key="saleOrders"><Link to="/saleOrderManagement">订单管理</Link></Menu.Item>
               </SubMenu>
 
             </Menu>
