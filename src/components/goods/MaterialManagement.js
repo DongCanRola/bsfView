@@ -21,7 +21,7 @@ export default class MaterialManagement extends React.Component {
       rawVisible: false,
       makingsVisible: false,
       //operationVisible: "none",
-      operationVisible: window.sessionStorage.getItem("currentRole") === 6 ? "inline":"none",
+      operationVisible: window.sessionStorage.getItem("currentRole") === "6" ? "inline":"none",
       loadingRaw: true,
       loadingMakings: true,
       rawData: [],
@@ -32,6 +32,7 @@ export default class MaterialManagement extends React.Component {
         {
           title: "编号",
           dataIndex: "goodsId",
+          width: "33%",
           sorter: (a, b) => a.goodsId - b.goodsId
         },{
           title: "类型",
@@ -41,9 +42,11 @@ export default class MaterialManagement extends React.Component {
               show = "加工材料";
             return(<span>{show}</span>);
           },
+          width: "33%",
           dataIndex: "goodsType"
         },{
           title: "名称",
+          width: "33%",
           dataIndex: "goodsName"
         }
       ],
@@ -51,6 +54,8 @@ export default class MaterialManagement extends React.Component {
       addRawName: "",
       addMakingsName: ""
     };
+    this.setData("1");
+    this.setData("2");
   }
 
   setData(type) {

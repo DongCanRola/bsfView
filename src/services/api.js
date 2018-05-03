@@ -43,7 +43,8 @@ export async function addUser(obj) {
     "email": obj.email,
     "password": md5("123"),
     "user_roles": obj.user_roles
-  }
+  };
+  console.log(body);
   return post("/api/user/add",headers,body);
 }
 

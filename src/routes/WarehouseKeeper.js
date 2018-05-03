@@ -58,7 +58,7 @@ const WarehouseKeeper =React.createClass({
                 title={<span><Icon type="scan" /><span className="nav-text">库存管理</span></span>}
               >
                 {
-                  <Menu.Item key="employee">仓库管理</Menu.Item>
+                  <Menu.Item key="warehouseManagement"><Link to="/warehouseManagement">仓库管理</Link></Menu.Item>
                   //<Menu.Item key="employee"><Link to="employeeManagement">订单管理</Link></Menu.Item>
                 }
               </SubMenu>

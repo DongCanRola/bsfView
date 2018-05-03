@@ -2,7 +2,9 @@
  * Created by dongc_000 on 2018/5/1.
  */
 import React from 'react';
-import {Card, Table, Form, Modal, Input} from 'antd';
+import {Card, Table, Form, Modal, Input, message, Button} from 'antd';
+
+import {getProduct, addProduct} from '../../services/goodsApi';
 
 const FormItem = Form.Item;
 const ProductForm = Form.create() (
@@ -57,7 +59,7 @@ export default class ProductManagement extends React.Component {
     super(props);
     this.state = {
       addVisible: false,
-      operationVisible: window.sessionStorage.getItem("currentRole") === 6 ? "inline":"none",
+      operationVisible: window.sessionStorage.getItem("currentRole") === "6" ? "inline":"none",
       loadingProduct: true,
 
       productData: [],
@@ -65,19 +67,24 @@ export default class ProductManagement extends React.Component {
       column: [
         {
           title: "编号",
-          dataIndex: "productId"
+          dataIndex: "productId",
+          width: "20%"
         },{
           title: "名称",
-          dataIndex: "productName"
+          dataIndex: "productName",
+          width: "20%"
         },{
           title: "等级",
-          dataIndex: "productLevel"
+          dataIndex: "productLevel",
+          width: "20%"
         },{
           title: "颜色",
-          dataIndex: "productColor"
+          dataIndex: "productColor",
+          width: "20%"
         },{
           title: "风格",
-          dataIndex: "productStyle"
+          dataIndex: "productStyle",
+          width: "20%"
         }
       ]
     };
@@ -85,8 +92,57 @@ export default class ProductManagement extends React.Component {
   }
 
   setData() {
-
+    getProduct().then(resp => {
+      let v = [];
+      console.log(resp.data.entity);
+      for(let item of resp.data.entity) {
+        v.push({
+          productId: item.product_id,
+          productName: item.product_name,
+          productLevel: item.product_level,
+          productColor: item.product_color,
+          productStyle: item.product_style
+        });
+      }
+      this.setState({
+        productData: v,
+        loadingProduct: false
+      });
+    }).catch(() => {
+      message.warning("获取数据失败！");
+    });
   }
+
+  saveFormRef = (form) => {
+    this.form = form;
+  };
+  handleProductCancel = () => {
+    this.setState({addVisible: false});
+  };
+  handleProductCreate = () => {
+    const form = this.form;
+    form.validateFields((err, values) => {
+      if(err) {
+        return;
+      }
+      var obj = {
+        product_name: values.newProductName,
+        product_level: values.newProductLevel,
+        product_color: values.newProductColor,
+        product_style: values.newProductStyle
+      };
+      addProduct(obj).then(resp => {
+        console.log(resp.data.entity);
+        if(resp.data.entity.result === 'ok') {
+          message.success("增加成功，新成品ID为："+resp.data.entity.message, 5);
+          this.setData();
+          this.setState({addVisible: false});
+        }
+      }).catch(() => {
+        message.warning("增加失败！");
+      })
+    })
+  };
 
   onSelectChange(selectedRowKeys) {
     console.log("selectedRowKeys changed: ", selectedRowKeys);
@@ -140,6 +196,12 @@ export default class ProductManagement extends React.Component {
           scroll={{x: 1000, y: 1000}}
           loading={this.state.loadingProduct}
           rowKey={"productId"}
+        />
+        <ProductForm
+          ref={this.saveFormRef}
+          visible={this.state.addVisible}
+          onCancel={this.handleProductCancel}
+          onCreate={this.handleProductCreate}
         />
       </Card>
     )

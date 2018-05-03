@@ -57,10 +57,8 @@ const Producer =React.createClass({
                 key="contract"
                 title={<span><Icon type="scan" /><span className="nav-text">生产管理</span></span>}
               >
-                {
-                  <Menu.Item key="employee">原料种类管理</Menu.Item>
-                  //<Menu.Item key="employee"><Link to="employeeManagement">订单管理</Link></Menu.Item>
-                }
+                  <Menu.Item key="material"><Link to="/materialManagement">原料种类管理</Link></Menu.Item>
+                  <Menu.Item key="product"><Link to="/productManagement">成品种类管理</Link></Menu.Item>
               </SubMenu>
 
             </Menu>
