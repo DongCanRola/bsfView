@@ -55,10 +55,10 @@ const Accountant =React.createClass({
 
               <SubMenu
                 key="contract"
-                title={<span><Icon type="scan" /><span className="nav-text">销售管理</span></span>}
+                title={<span><Icon type="scan" /><span className="nav-text">财务管理</span></span>}
               >
                 {
-                  <Menu.Item key="employee">客户管理</Menu.Item>
+                  <Menu.Item key="savings"><Link to="/savingsManagement">账户管理</Link></Menu.Item>
                   //<Menu.Item key="employee"><Link to="employeeManagement">订单管理</Link></Menu.Item>
                 }
               </SubMenu>

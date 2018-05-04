@@ -22,7 +22,9 @@ import WarehouseKeeper from './routes/WarehouseKeeper';
 import WarehouseManagement from './components/warehouse/WarehouseManagement';
 
 import Producer from './routes/Producer';
+
 import Accountant from './routes/Accountant';
+import SavingsManagement from './components/account/SavingsManagement';
 
 import NotFoundPage from "./components/util/NotFoundPage";
 
@@ -70,7 +72,7 @@ function RouterConfig({ history }) {
       </Route>
 
       <Route path="/accountant" component={Accountant}>
-
+        <Route path="/savingsManagement" component={SavingsManagement}/>
       </Route>
 
       <Route path='/404' component={NotFoundPage} />
