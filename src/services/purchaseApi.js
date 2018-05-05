@@ -16,7 +16,6 @@ export async function addNewOrder(obj) {
   headers.append('Content-Type', "application/json");
   headers.append('Accept', 'application/json');
   var body = {
-    purchaseOrder_id: obj.purchaseOrder_id,
     purchaseGoods_id: obj.purchaseGoods_id,
     purchase_num: obj.purchase_num,
     purchase_price: obj.purchase_price,

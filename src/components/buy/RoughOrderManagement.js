@@ -16,18 +16,32 @@ const customPanelStyle = {
   fontColor:''
 };
 
+const FormItem = Form.Item;
+const PurchaseOrderForm = Form.create() (
+  (props) => {
+
+  }
+);
+
 export default class RoughOrderManagement extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      addNewVisible: false,
+      addNewVisible: this.judgeBuyAdd,
+      newBuyGoods: window.sessionStorage.getItem("newBuyMaterial") === null ? '': window.sessionStorage.getItem("newBuyMaterial"),
+      newBuyCustomer: window.sessionStorage.getItem("newBuyCustomer") === null ? '' : window.sessionStorage.getItem("newBuyCustomer"),
       roughData: [],
       loadingData: true,
       selectedRowKeys: [],
       column: orderColumn()
     };
     this.setData();
+  }
+
+  static judgeBuyAdd() {
+    return (window.sessionStorage.getItem("newBuyMaterial") !== null) &&
+      (window.sessionStorage.getItem("newBuyCustomer") !== null);
   }
 
   setData() {

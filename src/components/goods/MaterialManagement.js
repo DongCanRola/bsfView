@@ -22,6 +22,7 @@ export default class MaterialManagement extends React.Component {
       makingsVisible: false,
       //operationVisible: "none",
       operationVisible: window.sessionStorage.getItem("currentRole") === "6" ? "inline":"none",
+      chooseVisible: window.sessionStorage.getItem("currentRole") === "4" ? "inline":"none",
       loadingRaw: true,
       loadingMakings: true,
       rawData: [],
@@ -198,6 +199,26 @@ export default class MaterialManagement extends React.Component {
                     >
                       增加原料
                     </Button>
+                    <Button
+                      style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.chooseVisible}}
+                      onClick={
+                        () => {
+                          //this.setState({rawVisible:true});
+                        }
+                      }
+                    >
+                      下一步
+                    </Button>
+                    <Button
+                      style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.chooseVisible}}
+                      onClick={
+                        () => {
+                          window.history.back();
+                        }
+                      }
+                    >
+                      返回
+                    </Button>
                   </div>
                 }
               >
@@ -240,6 +261,26 @@ export default class MaterialManagement extends React.Component {
                       }
                     >
                       增加加工材料
+                    </Button>
+                    <Button
+                      style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.chooseVisible}}
+                      onClick={
+                        () => {
+                          //this.setState({rawVisible:true});
+                        }
+                      }
+                    >
+                      下一步
+                    </Button>
+                    <Button
+                      style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.chooseVisible}}
+                      onClick={
+                        () => {
+                          window.history.back();
+                        }
+                      }
+                    >
+                      返回
                     </Button>
                   </div>
                 }
