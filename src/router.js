@@ -13,7 +13,7 @@ import SaleOrderManagement from './components/sale/SaleOrderManagement';
 
 import Buyer from './routes/Buyer';
 import BuyCustomerManagement from './components/buy/BuyCustomerManagement';
-import BuyOrderManagement from './components/buy/BuyOrderManagement';
+import BuyRoughOrderManagement from './components/buy/RoughOrderManagement';
 
 import MaterialManagement from './components/goods/MaterialManagement';
 import ProductManagement from './components/goods/ProductManagement';
@@ -59,7 +59,7 @@ function RouterConfig({ history }) {
 
       <Route path="/buyer" component={Buyer}>
         <Route path="/buyCustomerManagement" component={BuyCustomerManagement}/>
-        <Route path="/buyOrderManagement" component={BuyOrderManagement}/>
+        <Route path="/roughOrderManagement" component={BuyRoughOrderManagement}/>
       </Route>
 
       <Route path="/warehouseKeeper" component={WarehouseKeeper}>

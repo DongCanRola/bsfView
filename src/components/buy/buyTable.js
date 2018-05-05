@@ -52,3 +52,34 @@ const customerList = [
 export function customerColumn() {
   return customerList;
 }
+
+const orderList = [
+  {
+    title: "编号",
+    dataIndex: "purchaseOrder_id",
+    width: "15%"
+  },{
+    title: "货物名称",
+    dataIndex: "purchaseGoods_name",
+    width: "15%"
+  },{
+    title: "数量",
+    dataIndex: "purchase_num",
+    width: "15%"
+  },{
+    title: "单价",
+    dataIndex: "purchase_price",
+    width: "15%"
+  },{
+    title: "供应商",
+    dataIndex: "provider_name",
+    width: "20%"
+  },{
+    title: "订货时间",
+    dataIndex: "purchase_time",
+    width: "20%"
+  }
+];
+export function orderColumn() {
+  return orderList;
+}

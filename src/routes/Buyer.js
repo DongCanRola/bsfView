@@ -58,7 +58,13 @@ const Buyer =React.createClass({
                 title={<span><Icon type="scan" /><span className="nav-text">进货管理</span></span>}
               >
                 <Menu.Item key="buyCustomer"> <Link to="/buyCustomerManagement">客户管理</Link></Menu.Item>
-                <Menu.Item key="buyOrders"><Link to="/buyOrderManagement">订单管理</Link></Menu.Item>
+                <Menu.Item key="buyRoughOrders"><Link to="/roughOrderManagement">订单草稿</Link></Menu.Item>
+                <Menu.Item key="buyUnreachOrders">未达订单</Menu.Item>
+                <Menu.Item key="buyReachedOrders">到货订单</Menu.Item>
+                <Menu.Item key="buySavedOrders">入库订单</Menu.Item>
+                <Menu.Item key="buyCancelledOrders">已取消订单</Menu.Item>
+                <Menu.Item key="buyPartedreOrders">部分退货订单</Menu.Item>
+                <Menu.Item key="buyAllreOrders">完全退货订单</Menu.Item>
               </SubMenu>
 
             </Menu>
