@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import {Card, Table, Collapse, Button, Modal, Input, message} from 'antd';
-
+import { Router, Route,IndexRoute,hashHistory,browserHistory } from 'dva/router';
 import {getMaterial, addMaterial} from '../../services/goodsApi';
 
 const Panel = Collapse.Panel;
@@ -86,6 +86,30 @@ export default class MaterialManagement extends React.Component {
     }).catch(() => {
       message.warning("数据获取失败！");
     });
+  }
+
+  chooseOneToBuy(type) {
+    if(type === "1") {
+      if(this.state.selectedRawRowKeys.length !== 1) {
+        message.warning("请确定选择一项货物！",2);
+      } else {
+        window.sessionStorage.setItem("newBuyMaterial",this.state.selectedRawRowKeys[0]);
+      }
+    } else {
+      if(this.state.selectedMakingsRowKeys.length !== 1) {
+        message.warning("请确定选择一项货物！",2);
+      } else {
+        window.sessionStorage.setItem("newBuyMaterial",this.state.selectedMakingsRowKeys[0]);
+      }
+    }
+    window.sessionStorage.setItem("newBuyOrder", type);
+    browserHistory.push({pathname: '/customerChoose'});
+  }
+
+  cancelCrateBuyOrder() {
+    window.sessionStorage.removeItem("newBuyMaterial");
+    window.sessionStorage.removeItem("newBuyOrder");
+    window.history.back();
   }
 
   onSelectChangeRaw(selectedRawRowKeys) {
@@ -204,6 +228,7 @@ export default class MaterialManagement extends React.Component {
                       onClick={
                         () => {
                           //this.setState({rawVisible:true});
+                          this.chooseOneToBuy("1");
                         }
                       }
                     >
@@ -213,7 +238,8 @@ export default class MaterialManagement extends React.Component {
                       style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.chooseVisible}}
                       onClick={
                         () => {
-                          window.history.back();
+                          //window.history.back();
+                          this.cancelCrateBuyOrder();
                         }
                       }
                     >
@@ -267,6 +293,7 @@ export default class MaterialManagement extends React.Component {
                       onClick={
                         () => {
                           //this.setState({rawVisible:true});
+                          this.chooseOneToBuy("2");
                         }
                       }
                     >
@@ -276,7 +303,8 @@ export default class MaterialManagement extends React.Component {
                       style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.chooseVisible}}
                       onClick={
                         () => {
-                          window.history.back();
+                          //window.history.back();
+                          this.cancelCrateBuyOrder();
                         }
                       }
                     >

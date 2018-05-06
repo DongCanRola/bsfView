@@ -60,6 +60,8 @@ function RouterConfig({ history }) {
       <Route path="/buyer" component={Buyer}>
         <Route path="/buyCustomerManagement" component={BuyCustomerManagement}/>
         <Route path="/roughOrderManagement" component={BuyRoughOrderManagement}/>
+        <Route path="/materialChoose" component={MaterialManagement}/>
+        <Route path="/customerChoose" component={BuyCustomerManagement}/>
       </Route>
 
       <Route path="/warehouseKeeper" component={WarehouseKeeper}>

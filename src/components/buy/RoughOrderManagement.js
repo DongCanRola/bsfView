@@ -2,8 +2,8 @@
  * Created by dongc_000 on 2018/5/1.
  */
 import React from 'react';
-import {Card, Form, Table, Button, message, Collapse} from 'antd';
-import browserHistory from 'dva/router';
+import {Card, Form, Table, Button, message, Collapse, Modal, Input} from 'antd';
+import { Router, Route,IndexRoute,hashHistory,browserHistory } from 'dva/router';
 
 import {orderColumn} from './buyTable';
 import {getOrdersByState,addNewOrder} from '../../services/purchaseApi';
@@ -19,7 +19,33 @@ const customPanelStyle = {
 const FormItem = Form.Item;
 const PurchaseOrderForm = Form.create() (
   (props) => {
-
+    const { visible, title, onCancel, onCreate, form } = props;
+    const { getFieldDecorator } = form;
+    return (
+      <Modal
+        visible={visible}
+        title={title}
+        onCancel={onCancel}
+        onOk={onCreate}
+      >
+        <Form layout="vertical">
+          <FormItem label="数量">
+            {getFieldDecorator('orderNum',{
+              rules: [{ required:true, message: '请输入进货数量！'}],
+            })(
+              <Input/>
+            )}
+          </FormItem>
+          <FormItem label="单价">
+            {getFieldDecorator('orderPrice',{
+              rules: [{ required:true, message: '请输入进货单价！'}],
+            })(
+              <Input/>
+            )}
+          </FormItem>
+        </Form>
+      </Modal>
+    )
   }
 );
 
@@ -28,7 +54,7 @@ export default class RoughOrderManagement extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      addNewVisible: this.judgeBuyAdd,
+      addNewVisible: (window.sessionStorage.getItem("newBuyMaterial") !== null) && (window.sessionStorage.getItem("newBuyCustomer") !== null),
       newBuyGoods: window.sessionStorage.getItem("newBuyMaterial") === null ? '': window.sessionStorage.getItem("newBuyMaterial"),
       newBuyCustomer: window.sessionStorage.getItem("newBuyCustomer") === null ? '' : window.sessionStorage.getItem("newBuyCustomer"),
       roughData: [],
@@ -39,10 +65,12 @@ export default class RoughOrderManagement extends React.Component {
     this.setData();
   }
 
-  static judgeBuyAdd() {
-    return (window.sessionStorage.getItem("newBuyMaterial") !== null) &&
-      (window.sessionStorage.getItem("newBuyCustomer") !== null);
-  }
+  /*
+   static judgeBuyAdd() {
+   return (window.sessionStorage.getItem("newBuyMaterial") !== null) &&
+   (window.sessionStorage.getItem("newBuyCustomer") !== null);
+   }
+   */
 
   setData() {
     getOrdersByState("1").then(resp => {
@@ -74,8 +102,52 @@ export default class RoughOrderManagement extends React.Component {
   }
 
   addOrder() {
+    browserHistory.push({pathname: '/materialChoose'});
     console.log("增加新订单！");
   }
+
+  saveFormRef = (form) => {
+    this.form = form;
+  };
+  handleAddCancel = () => {
+    window.sessionStorage.removeItem("newBuyMaterial");
+    window.sessionStorage.removeItem("newBuyCustomer");
+    this.setState({
+      addNewVisible: false
+    });
+  };
+  handleAddCreate = () => {
+    const form = this.form;
+    form.validateFields((err, values) => {
+      if(err) {
+        return;
+      }
+      var obj = {
+        purchaseGoods_id: this.state.newBuyGoods,
+        purchase_num: values.orderNum,
+        purchase_price: values.orderPrice,
+        provider_id: this.state.newBuyCustomer
+      };
+      console.log("new order: ", obj);
+      window.sessionStorage.removeItem("newBuyMaterial");
+      window.sessionStorage.removeItem("newBuyCustomer");
+      window.sessionStorage.removeItem("newBuyOrder");
+      addNewOrder(obj).then(resp => {
+        console.log(resp.data.entity);
+        if(resp.data.entity.result === 'ok') {
+          message.success("成功添加订单，订单编号为：" + resp.data.entity.message, 5);
+          this.setData();
+          this.setState({
+            addNewVisible: false
+          });
+        } else {
+          message.warning("添加订单失败，请重新操作！", 2);
+        }
+      }).catch(() => {
+        message.warning("添加订单失败！", 2);
+      })
+    })
+  };
 
   confirmOrder() {
     console.log("确认订单！");
@@ -154,6 +226,13 @@ export default class RoughOrderManagement extends React.Component {
           scroll={{x: 1000, y: 1000}}
           loading={this.state.loadingData}
           rowKey={"purchaseOrder_id"}
+        />
+        <PurchaseOrderForm
+          ref={this.saveFormRef}
+          visible={this.state.addNewVisible}
+          title= {"货物编号："+this.state.newBuyGoods+", 供应商编号："+this.state.newBuyCustomer}
+          onCancel={this.handleAddCancel}
+          onCreate={this.handleAddCreate}
         />
       </Card>
     )

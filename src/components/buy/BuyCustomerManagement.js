@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import {Card, Button, Table, Form, Modal, Input, Select, message, Collapse} from 'antd';
-
+import { Router, Route,IndexRoute,hashHistory,browserHistory } from 'dva/router';
 import {customerColumn} from './buyTable';
 import {getCustomerByProvide, addCustomer} from '../../services/customerApi';
 
@@ -127,7 +127,11 @@ export default class BuyCustomerManagement extends React.Component {
       customerVisible: false,
       agentVisible: false,
       loadCustomer: true,
-      loadAgent: true
+      loadAgent: true,
+
+      rawChoose: (window.sessionStorage.getItem("newBuyOrder") !== null) && (window.sessionStorage.getItem("newBuyOrder") !== "1"),
+      makingsChoose: (window.sessionStorage.getItem("newBuyOrder") !== null) && (window.sessionStorage.getItem("newBuyOrder") !== "2"),
+      chooseVisible: window.sessionStorage.getItem("newBuyOrder") !== null
     };
     this.setData("1");
     this.setData("2");
@@ -163,6 +167,61 @@ export default class BuyCustomerManagement extends React.Component {
         });
       }
     }).catch();
+  }
+
+  /*
+   judgeRawChoose() {
+   return window.sessionStorage.getItem("newBuyOrder") !== "1";
+   }
+
+   judgeMakingsChoose() {
+   return window.sessionStorage.getItem("newBuyOrder") !== "2";
+   }
+   */
+
+  /*
+   setChoose() {
+   let item = window.sessionStorage.getItem("newBuyOrder");
+   window.sessionStorage.removeItem("newBuyOrder");
+   if(item === "1") {
+   this.setState({
+   makingsChoose: true,
+   rawChoose: false,
+   chooseVisible: true
+   });
+   }
+   if(item === "2") {
+   this.setState({
+   rawChoose: true,
+   makingsChoose: false,
+   chooseVisible: true
+   });
+   }
+   }
+   */
+
+  chooseOneBuyFrom(type) {
+    let materialType = window.sessionStorage.getItem("newBuyOrder");
+    if(type === "1") {
+      if(this.state.selectedCustomerRowKeys.length !== 1 || materialType !==  "1") {
+        message.warning("请选择一个原料供应商！",2);
+      } else {
+        window.sessionStorage.setItem("newBuyCustomer", this.state.selectedCustomerRowKeys[0]);
+        browserHistory.push({pathname: '/roughOrderManagement'});
+      }
+    } else {
+      if(this.state.selectedAgentRowKeys.length !== 1 || materialType !== "2") {
+        message.warning("请选择一个加工材料供应商！",2);
+      } else {
+        window.sessionStorage.setItem("newBuyCustomer", this.state.selectedAgentRowKeys[0]);
+        browserHistory.push({pathname: '/roughOrderManagement'});
+      }
+    }
+  }
+
+  cancelChoose() {
+    window.sessionStorage.removeItem("newBuyCustomer");
+    window.history.back();
   }
 
   onSelectChangeCustomer(selectedCustomerRowKeys) {
@@ -298,6 +357,28 @@ export default class BuyCustomerManagement extends React.Component {
                         >
                           添加供应商
                         </Button>
+                        <Button
+                          style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.chooseVisible}}
+                          onClick={
+                            () => {
+                              //this.setState({rawVisible:true});
+                              this.chooseOneBuyFrom("1");
+                            }
+                          }
+                        >
+                          下一步
+                        </Button>
+                        <Button
+                          style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.chooseVisible}}
+                          onClick={
+                            () => {
+                              //window.history.back();
+                              this.cancelChoose();
+                            }
+                          }
+                        >
+                          返回
+                        </Button>
                       </div>
                     }
               >
@@ -332,6 +413,28 @@ export default class BuyCustomerManagement extends React.Component {
                           }
                         >
                           添加供应商
+                        </Button>
+                        <Button
+                          style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.chooseVisible}}
+                          onClick={
+                            () => {
+                              //this.setState({rawVisible:true});
+                              this.chooseOneBuyFrom("2");
+                            }
+                          }
+                        >
+                          下一步
+                        </Button>
+                        <Button
+                          style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.chooseVisible}}
+                          onClick={
+                            () => {
+                              //window.history.back();
+                              this.cancelChoose();
+                            }
+                          }
+                        >
+                          返回
                         </Button>
                       </div>
                     }
