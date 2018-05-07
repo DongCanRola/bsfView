@@ -23,3 +23,16 @@ export async function addNewOrder(obj) {
   };
   return post("/api/purchase/order/add", headers, body);
 }
+
+export async function changeOrderState(obj) {
+  var headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  headers.append('Accept', 'application/json');
+  //headers.set("order_id", orderId);
+  //headers.set("state", toState);
+  var body = {
+    purchaseOrder_id: obj.orderId,
+    purchase_state: obj.toState
+  };
+  return put("/api/purchase/order/stateChange", headers, body);
+}

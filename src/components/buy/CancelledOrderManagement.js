@@ -3,15 +3,15 @@
  */
 import React from 'react';
 import {Card, Button, message, Table} from 'antd';
-
+import {getOrdersByState,changeOrderState} from '../../services/purchaseApi';
 import {orderColumn} from './buyTable';
 
-export default class UnreachOrderManagement extends React.Component {
+export default class CancelledOrderManagement extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      unreachData: [],
+      cancelledData: [],
       loadingData: true,
       selectedRowKeys: [],
       column: orderColumn()
@@ -25,13 +25,33 @@ export default class UnreachOrderManagement extends React.Component {
   }
 
   setData() {
-
+    getOrdersByState("5").then(resp => {
+      console.log("已取消订单：",resp.data.entity);
+      let v = [];
+      for(let item of resp.data.entity) {
+        v.push({
+          purchaseOrder_id: item.purchaseOrder_id,
+          purchaseGoods_name: item.purchaseGoods_name,
+          purchase_num: item.purchase_num,
+          purchase_price: item.purchase_price,
+          provider_name: item.provider_name,
+          purchase_time: item.purchase_time
+        });
+      }
+      console.log(v);
+      this.setState({
+        cancelledData: v,
+        loadingData: false
+      });
+    }).catch(() => {
+      message.warning("获取订单列表失败！");
+    })
   }
 
   render() {
 
     const pagination = {
-      total: this.state.unreachData.length,
+      total: this.state.cancelledData.length,
       showSizeChanger: true,
       onShowSizeChange(current, pageSize) {
         console.log('Current: ', current, '; PageSize: ', pageSize)
@@ -50,26 +70,17 @@ export default class UnreachOrderManagement extends React.Component {
 
     return (
       <Card
-        title="已确认订单列表"
+        title="已取消订单列表"
         extra={
           <div>
-            <Button
-              style={{width: 120, marginRight: 5, marginLeft: 10}}
-              onClick={
-                () => {
-                  //this.setState({customerVisible:true});
-                }
-              }
-            >
-              取消订单
-            </Button>
+
           </div>
         }
       >
         <Table
           rowSelection={rowSelection}
           columns={this.state.column}
-          dataSource={this.state.unreachData}
+          dataSource={this.state.cancelledData}
           bordered
           pagination={pagination}
           scroll={{x: 1000, y: 1000}}
@@ -81,4 +92,4 @@ export default class UnreachOrderManagement extends React.Component {
   }
 }
 
-module.export = UnreachOrderManagement;
+module.export = CancelledOrderManagement;

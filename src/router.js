@@ -14,6 +14,12 @@ import SaleOrderManagement from './components/sale/SaleOrderManagement';
 import Buyer from './routes/Buyer';
 import BuyCustomerManagement from './components/buy/BuyCustomerManagement';
 import BuyRoughOrderManagement from './components/buy/RoughOrderManagement';
+import BuyUnreachOrderManagement from './components/buy/UnreachOrderManagement';
+import BuyReachedOrderManagement from './components/buy/ReachedOrderManagement';
+import BuySavedOrderManagement from './components/buy/SavedOrderManagement';
+import BuyCancelledOrderManagement from './components/buy/CancelledOrderManagement';
+import BuyPartedreOrderManagement from './components/buy/PartedreOrderManagement';
+import BuyAllreOrderManagement from './components/buy/AllreOrderManagement';
 
 import MaterialManagement from './components/goods/MaterialManagement';
 import ProductManagement from './components/goods/ProductManagement';
@@ -60,6 +66,12 @@ function RouterConfig({ history }) {
       <Route path="/buyer" component={Buyer}>
         <Route path="/buyCustomerManagement" component={BuyCustomerManagement}/>
         <Route path="/roughOrderManagement" component={BuyRoughOrderManagement}/>
+        <Route path="/unreachOrderManagement" component={BuyUnreachOrderManagement}/>
+        <Route path="/reachedOrderManagement" component={BuyReachedOrderManagement}/>
+        <Route path="/savedOrderManagement" component={BuySavedOrderManagement}/>
+        <Route path="/cancelledOrderManagement" component={BuyCancelledOrderManagement}/>
+        <Route path="/partedreOrderManagement" component={BuyPartedreOrderManagement}/>
+        <Route path="/allreOrderManagement" component={BuyAllreOrderManagement}/>
         <Route path="/materialChoose" component={MaterialManagement}/>
         <Route path="/customerChoose" component={BuyCustomerManagement}/>
       </Route>

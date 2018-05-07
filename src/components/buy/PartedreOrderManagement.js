@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import {Card, Button, message, Table} from 'antd';
-
+import {getOrdersByState,changeOrderState} from '../../services/purchaseApi';
 import {orderColumn} from './buyTable';
 
 export default class PartedreOrderManagement extends React.Component {
@@ -25,7 +25,27 @@ export default class PartedreOrderManagement extends React.Component {
   }
 
   setData() {
-
+    getOrdersByState("6").then(resp => {
+      console.log("部分退货订单：",resp.data.entity);
+      let v = [];
+      for(let item of resp.data.entity) {
+        v.push({
+          purchaseOrder_id: item.purchaseOrder_id,
+          purchaseGoods_name: item.purchaseGoods_name,
+          purchase_num: item.purchase_num,
+          purchase_price: item.purchase_price,
+          provider_name: item.provider_name,
+          purchase_time: item.purchase_time
+        });
+      }
+      console.log(v);
+      this.setState({
+        partedreData: v,
+        loadingData: false
+      });
+    }).catch(() => {
+      message.warning("获取订单列表失败！");
+    })
   }
 
   render() {
@@ -50,7 +70,7 @@ export default class PartedreOrderManagement extends React.Component {
 
     return (
       <Card
-        title="已确认订单列表"
+        title="部分退货订单列表"
         extra={
           <div>
             <Button
@@ -61,7 +81,7 @@ export default class PartedreOrderManagement extends React.Component {
                 }
               }
             >
-              取消订单
+              继续退货
             </Button>
           </div>
         }

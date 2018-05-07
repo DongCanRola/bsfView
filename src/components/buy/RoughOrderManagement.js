@@ -6,7 +6,7 @@ import {Card, Form, Table, Button, message, Collapse, Modal, Input} from 'antd';
 import { Router, Route,IndexRoute,hashHistory,browserHistory } from 'dva/router';
 
 import {orderColumn} from './buyTable';
-import {getOrdersByState,addNewOrder} from '../../services/purchaseApi';
+import {getOrdersByState,addNewOrder,changeOrderState} from '../../services/purchaseApi';
 
 const Panel = Collapse.Panel;
 const customPanelStyle = {
@@ -150,10 +150,50 @@ export default class RoughOrderManagement extends React.Component {
   };
 
   confirmOrder() {
+    let orders = this.state.selectedRowKeys;
+    if(orders.length === 0) {
+      message.warning("请选择需要确认的订单！", 2);
+    } else {
+      for(let order of orders) {
+        var obj = {
+          orderId: order,
+          toState: "2"
+        };
+        changeOrderState(obj).then(resp => {
+          console.log(resp.data.entity);
+          if(resp.data.entity.result === 'ok') {
+            message.success("订单" + order + "已确认", 2);
+            this.setData();
+          }
+        }).catch(() => {
+          message.warning("确认失败！", 2);
+        });
+      }
+    }
     console.log("确认订单！");
   }
 
   cancelOrder() {
+    let orders = this.state.selectedRowKeys;
+    if(orders.length === 0) {
+      message.warning("请选择需要取消的订单！", 2);
+    } else {
+      for(let order of orders) {
+        var obj = {
+          orderId: order,
+          toState: "5"
+        };
+        changeOrderState(obj).then(resp => {
+          console.log(resp.data.entity);
+          if(resp.data.entity.result === 'ok') {
+            message.success("订单" + order + "已取消", 2);
+            this.setData();
+          }
+        }).catch(() => {
+          message.warning("取消失败！", 2);
+        });
+      }
+    }
     console.log("取消订单！");
   }
 
