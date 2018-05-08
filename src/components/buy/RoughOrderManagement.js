@@ -6,7 +6,7 @@ import {Card, Form, Table, Button, message, Collapse, Modal, Input} from 'antd';
 import { Router, Route,IndexRoute,hashHistory,browserHistory } from 'dva/router';
 
 import {orderColumn} from './buyTable';
-import {getOrdersByState,addNewOrder,changeOrderState} from '../../services/purchaseApi';
+import {getOrdersByState,addNewOrder,changeOrderState,confirmOrder} from '../../services/purchaseApi';
 
 const Panel = Collapse.Panel;
 const customPanelStyle = {
@@ -60,7 +60,10 @@ export default class RoughOrderManagement extends React.Component {
       roughData: [],
       loadingData: true,
       selectedRowKeys: [],
-      column: orderColumn()
+      selectedRows: [],
+      column: orderColumn(),
+      discountVisible: false,
+      discountValue: ''
     };
     this.setData();
   }
@@ -96,9 +99,10 @@ export default class RoughOrderManagement extends React.Component {
     })
   }
 
-  onSelectChange(selectedRowKeys) {
+  onSelectChange(selectedRowKeys, selectedRows) {
     console.log("selectedRoughRowKeys changed: ", selectedRowKeys);
-    this.setState({selectedRowKeys});
+    console.log("selectedRoughRows changed: ",selectedRows);
+    this.setState({selectedRowKeys, selectedRows});
   }
 
   addOrder() {
@@ -150,20 +154,32 @@ export default class RoughOrderManagement extends React.Component {
   };
 
   confirmOrder() {
-    let orders = this.state.selectedRowKeys;
+    this.setState({discountVisible: true});
+  }
+  getInputDiscount(discount) {
+    console.log("折扣：",discount);
+    this.setState({discountValue: discount});
+  }
+  handleConfirmOk = () => {
+    //let orders = this.state.selectedRowKeys;
+    let orders = this.state.selectedRows;
     if(orders.length === 0) {
       message.warning("请选择需要确认的订单！", 2);
     } else {
       for(let order of orders) {
         var obj = {
-          orderId: order,
-          toState: "2"
+          orderId: order.purchaseOrder_id,
+          toState: "2",
+          orderDiscount: this.state.discountValue,
+          orderNum: order.purchase_num,
+          orderPrice: order.purchase_price
         };
-        changeOrderState(obj).then(resp => {
+        confirmOrder(obj).then(resp => {
           console.log(resp.data.entity);
           if(resp.data.entity.result === 'ok') {
             message.success("订单" + order + "已确认", 2);
             this.setData();
+            this.setState({discountVisible: false});
           }
         }).catch(() => {
           message.warning("确认失败！", 2);
@@ -171,7 +187,10 @@ export default class RoughOrderManagement extends React.Component {
       }
     }
     console.log("确认订单！");
-  }
+  };
+  handleConfirmCancel = () => {
+    this.setState({discountVisible: false});
+  };
 
   cancelOrder() {
     let orders = this.state.selectedRowKeys;
@@ -274,6 +293,14 @@ export default class RoughOrderManagement extends React.Component {
           onCancel={this.handleAddCancel}
           onCreate={this.handleAddCreate}
         />
+        <Modal
+          visible={this.state.discountVisible}
+          title="设置进货折扣"
+          onOk={() => {this.handleConfirmOk()}}
+          onCancel={() => {this.handleConfirmCancel()}}
+        >
+          <Input id="purchaseDiscount" onChange={value => this.getInputDiscount(value.target.value)}/>
+        </Modal>
       </Card>
     )
   }

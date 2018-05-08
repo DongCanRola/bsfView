@@ -36,3 +36,19 @@ export async function changeOrderState(obj) {
   };
   return put("/api/purchase/order/stateChange", headers, body);
 }
+
+export async function confirmOrder(obj) {
+  var headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  headers.append('Accept', 'application/json');
+  //headers.set("order_id", orderId);
+  //headers.set("state", toState);
+  var body = {
+    purchaseOrder_id: obj.orderId,
+    purchase_state: obj.toState,
+    purchase_discount: obj.orderDiscount,
+    purchase_num: obj.orderNum,
+    purchase_price: obj.orderPrice
+  };
+  return put("/api/purchase/order/stateChange", headers, body);
+}
