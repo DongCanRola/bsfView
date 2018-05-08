@@ -30,6 +30,15 @@ import WarehouseManagement from './components/warehouse/WarehouseManagement';
 import Producer from './routes/Producer';
 
 import Accountant from './routes/Accountant';
+import PurchasePayManagement from './components/account/PurchasePayManagement';
+import PurchasePayDetail from './components/account/PurchasePayDetail';
+import PurchaseReturnManagement from './components/account/PurchaseReturnManagement';
+import PurchaseReturnDetail from './components/account/PurchaseReturnDetail';
+import SaleGatherManagement from './components/account/SaleGatherManagement';
+import SaleGatherDetail from './components/account/SaleGatherDetail';
+import SaleReturnManagement from './components/account/SaleReturnManagement';
+import SaleReturnDetail from './components/account/SaleReturnDetail';
+
 import SavingsManagement from './components/account/SavingsManagement';
 
 import NotFoundPage from "./components/util/NotFoundPage";
@@ -87,6 +96,14 @@ function RouterConfig({ history }) {
 
       <Route path="/accountant" component={Accountant}>
         <Route path="/savingsManagement" component={SavingsManagement}/>
+        <Route path="/purchasePay" component={PurchasePayManagement}/>
+        <Route path="/purchasePayDetail" component={PurchasePayDetail}/>
+        <Route path="/purchaseReturn" component={PurchaseReturnManagement}/>
+        <Route path="/purchaseReturnDetail" component={PurchaseReturnDetail}/>
+        <Route path="/saleGather" component={SaleGatherManagement}/>
+        <Route path="/saleGatherDetail" component={SaleGatherDetail}/>
+        <Route path="/saleReturn" component={SaleReturnManagement}/>
+        <Route path="/saleReturnDetail" component={SaleReturnDetail}/>
       </Route>
 
       <Route path='/404' component={NotFoundPage} />

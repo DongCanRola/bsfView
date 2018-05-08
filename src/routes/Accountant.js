@@ -57,10 +57,11 @@ const Accountant =React.createClass({
                 key="contract"
                 title={<span><Icon type="scan" /><span className="nav-text">财务管理</span></span>}
               >
-                {
-                  <Menu.Item key="savings"><Link to="/savingsManagement">账户管理</Link></Menu.Item>
-                  //<Menu.Item key="employee"><Link to="employeeManagement">订单管理</Link></Menu.Item>
-                }
+                <Menu.Item key="savings"><Link to="/savingsManagement">账户管理</Link></Menu.Item>
+                <Menu.Item key="purchasePay"><Link to="/purchasePay">进货付款</Link></Menu.Item>
+                <Menu.Item key="purchaseReturn"><Link to="/purchaseReturn">进货退货收款</Link></Menu.Item>
+                <Menu.Item key="saleGather"><Link to="/saleGather">销售收款</Link></Menu.Item>
+                <Menu.Item key="saleReturn"><Link to="/saleReturn">销售退货付款</Link></Menu.Item>
               </SubMenu>
 
             </Menu>
