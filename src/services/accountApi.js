@@ -21,3 +21,10 @@ export async function addSavings(obj) {
   };
   return post("/api/savings/add", headers, body);
 }
+
+export async function getPurchasePayList() {
+  var headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  headers.append('Accept', 'application/json');
+  return get("/api/purchase/pay/list", headers);
+}
