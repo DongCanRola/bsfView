@@ -2,8 +2,9 @@
  * Created by dongc_000 on 2018/5/8.
  */
 import React from 'react';
-import {Card, Table, Button, message} from 'antd';
-import {getPurchasePayList} from '../../services/accountApi';
+import {Card, Table, Button, message, Form, Modal, Input} from 'antd';
+import { Router, Route,IndexRoute,hashHistory,browserHistory } from 'dva/router';
+import {getPurchasePayList, addPurchasePayDetail} from '../../services/accountApi';
 
 export default class PurchasePayManagement extends React.Component {
 
@@ -47,7 +48,9 @@ export default class PurchasePayManagement extends React.Component {
         }
       ],
       purchasePayData: [],
-      loadingData: true
+      loadingData: true,
+      payVisible: window.sessionStorage.getItem("pay_savings") !== null,
+      moneyToPay: ''
     };
     this.setData();
   }
@@ -77,9 +80,65 @@ export default class PurchasePayManagement extends React.Component {
     });
   }
 
+  purchasePay() {
+    let toPay = this.state.selectedRowKeys;
+    if(toPay.length !== 1) {
+      message.warning("请选择一个付款单进行付款！", 2);
+    } else {
+      window.sessionStorage.setItem("pay_id", this.state.selectedRowKeys[0]);
+      browserHistory.push({pathname: '/savingsManagement'});
+    }
+  }
+
   onSelectChangePurchasePay(selectedRowKeys) {
     console.log("selectedRowKeys changed: ", selectedRowKeys);
     this.setState({selectedRowKeys});
+  }
+
+  getMoney(setValue) {
+    console.log("money to pay: ", setValue);
+    this.setState({moneyToPay: setValue});
+  }
+  handlePaySubmit = () => {
+    var obj = {
+      pay_id : window.sessionStorage.getItem("pay_id"),
+      pay_money: this.state.moneyToPay,
+      pay_user: window.sessionStorage.getItem("userId"),
+      pay_savings: window.sessionStorage.getItem("pay_savings")
+    };
+    addPurchasePayDetail(obj).then(resp => {
+      console.log(resp.data.entity);
+      if(resp.data.entity.result === 'ok') {
+        message.success("成功添加付款！" + resp.data.entity.message, 5);
+        window.sessionStorage.removeItem("pay_id");
+        window.sessionStorage.removeItem("pay_savings");
+        window.sessionStorage.removeItem("pay_usable");
+        this.setState({
+          payVisible: false
+        });
+        this.setData();
+      }
+    }).catch(() => {
+      message.warning("添加付款失败！", 2);
+    })
+  };
+  handlePayCancel = () => {
+    this.setState({
+      payVisible: false
+    });
+    window.sessionStorage.removeItem("pay_id");
+    window.sessionStorage.removeItem("pay_savings");
+    window.sessionStorage.removeItem("pay_usable");
+  };
+
+  lookDetail() {
+    let pays = this.state.selectedRowKeys;
+    if(pays.length !== 1) {
+      message.warning("请选择一项查看！", 2);
+    } else {
+      window.sessionStorage.setItem("look_payId", pays[0]);
+      browserHistory.push({pathname: '/purchasePayDetail'});
+    }
   }
 
   render() {
@@ -100,14 +159,33 @@ export default class PurchasePayManagement extends React.Component {
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChangePurchasePay.bind(this)
-    }
+    };
 
     return (
       <Card
         title="进货付款单列表"
         extra={
           <div>
-
+            <Button
+              style={{width: 120, marginRight: 5, marginLeft: 10}}
+              onClick={
+                () => {
+                  this.purchasePay();
+                }
+              }
+            >
+              付款
+            </Button>
+            <Button
+              style={{width: 120, marginRight: 5, marginLeft: 10}}
+              onClick={
+                () => {
+                  this.lookDetail();
+                }
+              }
+            >
+              查看详情
+            </Button>
           </div>
         }
       >
@@ -121,6 +199,15 @@ export default class PurchasePayManagement extends React.Component {
           loading={this.state.loadingData}
           rowKey={"purchasePay_id"}
         />
+        <Modal
+          visible={this.state.payVisible}
+          title={"付款账户：" + window.sessionStorage.getItem("pay_savings") + "，账户余额：" + window.sessionStorage.getItem("pay_usable")}
+          destroyOnClose={true}
+          onOk={() => {this.handlePaySubmit()}}
+          onCancel={() => {this.handlePayCancel()}}
+        >
+          <Input id="payMoney" onChange={value => this.getMoney(value.target.value)}/>
+        </Modal>
       </Card>
     )
   }

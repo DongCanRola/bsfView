@@ -131,7 +131,7 @@ export default class BuyCustomerManagement extends React.Component {
 
       rawChoose: (window.sessionStorage.getItem("newBuyOrder") !== null) && (window.sessionStorage.getItem("newBuyOrder") !== "1"),
       makingsChoose: (window.sessionStorage.getItem("newBuyOrder") !== null) && (window.sessionStorage.getItem("newBuyOrder") !== "2"),
-      chooseVisible: window.sessionStorage.getItem("newBuyOrder") !== null
+      chooseVisible: window.sessionStorage.getItem("newBuyOrder") !== null ? 'inline':'none'
     };
     this.setData("1");
     this.setData("2");

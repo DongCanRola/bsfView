@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import {Card, Button, Table, Form, Modal, Input, Select, message} from 'antd';
-
+import { Router, Route,IndexRoute,hashHistory,browserHistory } from 'dva/router';
 import {getAllSavings, addSavings} from '../../services/accountApi';
 
 const FormItem = Form.Item;
@@ -51,6 +51,8 @@ export default class SavingsManagement extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      savingsManagement: window.sessionStorage.getItem("pay_id") === null ? 'inline':'none',
+      payChoose: window.sessionStorage.getItem("pay_id") !== null ? 'inline':'none',
       savingsData: [],
       addVisible: false,
       loadingSavings: true,
@@ -131,6 +133,17 @@ export default class SavingsManagement extends React.Component {
     })
   };
 
+  choosePaySavings() {
+    let chooseSavings = this.state.selectedRows;
+    if(chooseSavings.length !== 1) {
+      message.warning("请选择一个账户付款！", 2);
+    } else {
+      window.sessionStorage.setItem("pay_savings", chooseSavings[0].savings_id);
+      window.sessionStorage.setItem("pay_usable", chooseSavings[0].savings_balance);
+      browserHistory.push({pathname: '/purchasePay'});
+    }
+  }
+
   render() {
 
     const paginationSavings = {
@@ -156,7 +169,7 @@ export default class SavingsManagement extends React.Component {
             extra={
               <div>
                 <Button
-                  style={{width: 120, marginRight: 5, marginLeft: 10}}
+                  style={{width: 120, marginRight: 5, marginLeft: 10, display: this.state.savingsManagement}}
                   onClick={
                     () => {
                       this.setState({addVisible:true});
@@ -164,6 +177,26 @@ export default class SavingsManagement extends React.Component {
                   }
                 >
                   添加账户
+                </Button>
+                <Button
+                  style={{width: 120, marginRight: 5, marginLeft: 10, display: this.state.payChoose}}
+                  onClick={
+                    () => {
+                      this.choosePaySavings();
+                    }
+                  }
+                >
+                  下一步
+                </Button>
+                <Button
+                  style={{width: 120, marginRight: 5, marginLeft: 10, display: this.state.payChoose}}
+                  onClick={
+                    () => {
+                      //this.setState({addVisible:true});
+                    }
+                  }
+                >
+                  返回
                 </Button>
               </div>
             }>
