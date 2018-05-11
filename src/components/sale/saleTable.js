@@ -43,3 +43,100 @@ const customerList = [
 export function customerColumn() {
   return customerList;
 }
+
+const planOrderList = [
+  {
+    title: "订单编号",
+    dataIndex: "sale_orderId",
+    width: "18%"
+  },{
+    title: "成品编号",
+    dataIndex: "sale_productId",
+    width: "18%"
+  },{
+    title: "客户编号",
+    dataIndex: "sale_consumerId",
+    width: "18%"
+  },{
+    title: "计划时间",
+    dataIndex: "sale_orderTime",
+    width: "23%"
+  },{
+    title: "处理人",
+    dataIndex: "sale_user",
+    width: "18%"
+  }
+];
+export function planOrderColumn() {
+  return planOrderList;
+}
+
+const sampleOrderList = [
+  {
+    title: "订单编号",
+    dataIndex: "sale_orderId",
+    width: "15%"
+  },{
+    title: "成品编号",
+    dataIndex: "sale_productId",
+    width: "15%"
+  },{
+    title: "单位成本",
+    dataIndex: "sale_cost",
+    width: "15%"
+  },{
+    title: "客户编号",
+    dataIndex: "sale_consumerId",
+    width: "15%"
+  },{
+    title: "计划时间",
+    dataIndex: "sale_orderTime",
+    width: "20%"
+  },{
+    title: "处理人",
+    dataIndex: "sale_user",
+    width: "15%"
+  }
+];
+export function sampleOrderColumn() {
+  return sampleOrderList;
+}
+
+const completeOrderList = [
+  {
+    title: "订单编号",
+    dataIndex: "sale_orderId",
+    width: "12%"
+  },{
+    title: "成品编号",
+    dataIndex: "sale_productId",
+    width: "12%"
+  },{
+    title: "数量",
+    dataIndex: "sale_num",
+    width: "12%"
+  },{
+    title: "单位成本",
+    dataIndex: "sale_cost",
+    width: "12%"
+  },{
+    title: "单价",
+    dataIndex: "sale_price",
+    width: "12%"
+  },{
+    title: "客户编号",
+    dataIndex: "sale_consumerId",
+    width: "12%"
+  },{
+    title: "确定时间",
+    dataIndex: "sale_orderTime",
+    width: "15%"
+  },{
+    title: "处理人",
+    dataIndex: "sale_user",
+    width: "12%"
+  }
+];
+export function completeOrderColumn() {
+  return completeOrderList;
+}

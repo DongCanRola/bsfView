@@ -60,6 +60,7 @@ export default class ProductManagement extends React.Component {
     this.state = {
       addVisible: false,
       operationVisible: window.sessionStorage.getItem("currentRole") === "6" ? "inline":"none",
+      requiredVisible: window.sessionStorage.getItem("currentRole") === "3" ? 'inline':'none',
       loadingProduct: true,
 
       productData: [],
@@ -183,6 +184,16 @@ export default class ProductManagement extends React.Component {
               }
             >
               增加成品种类
+            </Button>
+            <Button
+              style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.operationVisible}}
+              onClick={
+                () => {
+                  //this.setState({addVisible:true});
+                }
+              }
+            >
+              需求成品
             </Button>
           </div>
         }

@@ -58,7 +58,11 @@ const Salesman =React.createClass({
                 title={<span><Icon type="scan" /><span className="nav-text">销售管理</span></span>}
               >
                 <Menu.Item key="saleCustomer"><Link to="/saleCustomerManagement">客户管理</Link></Menu.Item>
-                <Menu.Item key="saleOrders"><Link to="/saleOrderManagement">订单管理</Link></Menu.Item>
+                <Menu.Item key="planOrders"><Link to="/planOrderManagement">订单计划</Link></Menu.Item>
+                <Menu.Item key="sampleOrders"><Link to="/sampleOrderManagement">订单打样</Link></Menu.Item>
+                <Menu.Item key="produceOrders"><Link to="/produceOrderManagement">订单生产</Link></Menu.Item>
+                <Menu.Item key="storeOrders"><Link to="/storeOrderManagement">订单存储</Link></Menu.Item>
+                <Menu.Item key="cancelOrders"><Link to="/cancelOrderManagement">已取消订单</Link></Menu.Item>
               </SubMenu>
 
             </Menu>

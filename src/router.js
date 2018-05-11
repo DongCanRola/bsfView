@@ -9,7 +9,11 @@ import UserManagement from './components/admin/UserManagement';
 
 import Salesman from './routes/Salesman';
 import SaleCustomerManagement from './components/sale/SaleCustomerManagement';
-import SaleOrderManagement from './components/sale/SaleOrderManagement';
+import PlanOrderManagement from './components/sale/PlanOrderManagement';
+import SampleOrderManagement from './components/sale/SampleOrderManagement';
+import ProduceOrderManagement from './components/sale/ProduceOrderManagement';
+import StoreOrderManagement from './components/sale/StoreOrderManagement';
+import CancelOrderManagement from './components/sale/CancelOrderManagement';
 
 import Buyer from './routes/Buyer';
 import BuyCustomerManagement from './components/buy/BuyCustomerManagement';
@@ -69,7 +73,11 @@ function RouterConfig({ history }) {
 
       <Route path="/salesman" component={Salesman}>
         <Route path="/saleCustomerManagement" component={SaleCustomerManagement}/>
-        <Route path="/saleOrderManagement" component={SaleOrderManagement}/>
+        <Route path="/planOrderManagement" component={PlanOrderManagement}/>
+        <Route path="/sampleOrderManagement" component={SampleOrderManagement}/>
+        <Route path="/produceOrderManagement" component={ProduceOrderManagement}/>
+        <Route path="/storeOrderManagement" component={StoreOrderManagement}/>
+        <Route path="/cancelOrderManagement" component={CancelOrderManagement}/>
       </Route>
 
       <Route path="/buyer" component={Buyer}>
