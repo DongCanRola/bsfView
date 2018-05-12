@@ -22,10 +22,11 @@ export async function addMaterial(obj) {
   return post("/api/goods/material/add", headers, body);
 }
 
-export async function getProduct() {
+export async function getProduct(type) {
   var headers = new Headers();
   headers.append('Content-Type', "application/json");
   headers.append('Accept', 'application/json');
+  headers.set("productState", type);
   return get("/api/goods/product/list", headers);
 }
 
@@ -37,7 +38,19 @@ export async function addProduct(obj) {
     product_name: obj.product_name,
     product_level: obj.product_level,
     product_color: obj.product_color,
-    product_style: obj.product_style
+    product_style: obj.product_style,
+    product_state: obj.product_state
   };
   return post("/api/goods/product/add", headers, body);
+}
+
+export async function confirmProduct(obj) {
+  var headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  headers.append('Accept', 'application/json');
+  var body = {
+    product_id: obj.product_id,
+    product_state: obj.product_state
+  };
+  return put("/api/goods/product/update", headers, body);
 }

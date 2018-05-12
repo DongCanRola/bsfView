@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import {Card, Button, Table, Form, Modal, Input, Select, message, Collapse} from 'antd';
-
+import { Router, Route,IndexRoute,hashHistory,browserHistory } from 'dva/router';
 import {customerColumn} from './saleTable';
 import {getCustomer, addCustomer} from '../../services/customerApi';
 
@@ -123,6 +123,7 @@ export default class SaleCustomerManagement extends React.Component {
       selectedCustomerRowKeys: [],
       selectedAgentRowKeys: [],
       column: customerColumn(),
+      chooseCustomer: window.sessionStorage.getItem("order_product") !== null ? 'inline':'none',
 
       customerVisible: false,
       agentVisible: false,
@@ -241,6 +242,16 @@ export default class SaleCustomerManagement extends React.Component {
     })
   };
 
+  customerNext() {
+    let chooseCustomer = this.state.selectedCustomerRowKeys;
+    if(chooseCustomer.length !== 1) {
+      message.warning("请选择订单客户！", 2);
+    } else {
+      window.sessionStorage.setItem("order_consumer", chooseCustomer[0]);
+      browserHistory.push({pathname: '/planOrderManagement'});
+    }
+  }
+
   render() {
 
     const paginationCustomer = {
@@ -294,6 +305,26 @@ export default class SaleCustomerManagement extends React.Component {
                           }
                         >
                           添加客户
+                        </Button>
+                        <Button
+                          style={{width: 120, marginRight: 5, marginLeft: 10, display: this.state.chooseCustomer}}
+                          onClick={
+                            () => {
+                              this.customerNext()
+                          }
+                          }
+                        >
+                          下一步
+                        </Button>
+                        <Button
+                          style={{width: 120, marginRight: 5, marginLeft: 10, display: this.state.chooseCustomer}}
+                          onClick={
+                            () => {
+                              window.history.back();
+                            }
+                          }
+                        >
+                          返回
                         </Button>
                       </div>
                     }

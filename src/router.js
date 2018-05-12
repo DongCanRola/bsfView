@@ -78,6 +78,7 @@ function RouterConfig({ history }) {
         <Route path="/produceOrderManagement" component={ProduceOrderManagement}/>
         <Route path="/storeOrderManagement" component={StoreOrderManagement}/>
         <Route path="/cancelOrderManagement" component={CancelOrderManagement}/>
+        <Route path="/productChoose" component={ProductManagement}/>
       </Route>
 
       <Route path="/buyer" component={Buyer}>
