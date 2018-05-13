@@ -34,3 +34,16 @@ export async function updateOrderState(obj) {
   return put("/api/sale/order/update", headers, body);
 }
 
+export async function confirmOrder(obj) {
+  let headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  headers.append('Accept', 'application/json');
+  let body = {
+    sale_orderId: obj.sale_orderId,
+    sale_num: obj.sale_num,
+    sale_price: obj.sale_price,
+    sale_state: obj.sale_state
+  };
+  return put("/api/sale/order/update", headers, body);
+}
+
