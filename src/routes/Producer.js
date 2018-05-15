@@ -55,12 +55,19 @@ const Producer =React.createClass({
 
               <SubMenu
                 key="contract"
-                title={<span><Icon type="scan" /><span className="nav-text">生产管理</span></span>}
+                title={<span><Icon type="scan" /><span className="nav-text">生产材料管理</span></span>}
               >
                   <Menu.Item key="material"><Link to="/materialManagement">原料种类管理</Link></Menu.Item>
                   <Menu.Item key="product"><Link to="/productManagement">成品种类管理</Link></Menu.Item>
               </SubMenu>
-
+              <SubMenu
+                key="procedure"
+                title={<span><Icon type="scan" /><span className="nav-text">生产过程管理</span></span>}
+              >
+                <Menu.Item key="sample"><Link to="/saleOrderSample">订单打样</Link></Menu.Item>
+                <Menu.Item key="material"><Link to="/produceMaterial">材料准备</Link></Menu.Item>
+                <Menu.Item key="produce"><Link to="/produceProcedure">订单加工</Link></Menu.Item>
+              </SubMenu>
             </Menu>
           </Sider>
 
