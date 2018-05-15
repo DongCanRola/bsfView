@@ -30,6 +30,11 @@ import ProductManagement from './components/goods/ProductManagement';
 
 import WarehouseKeeper from './routes/WarehouseKeeper';
 import WarehouseManagement from './components/warehouse/WarehouseManagement';
+import WarehouseStockDetail from './components/warehouse/WarehouseStockDetail';
+import LookGoodsStock from './components/warehouse/LookGoodsStock';
+import GoodsStockDetail from './components/warehouse/GoodsStockDetail';
+import PurchaseStoreManagement from './components/warehouse/PurchaseStoreManagement';
+import PurchaseStoreDetail from './components/warehouse/PurchaseStoreDetail';
 
 import Producer from './routes/Producer';
 
@@ -96,6 +101,11 @@ function RouterConfig({ history }) {
 
       <Route path="/warehouseKeeper" component={WarehouseKeeper}>
         <Route path="/warehouseManagement" component={WarehouseManagement}/>
+        <Route path="/warehouseStockDetail" component={WarehouseStockDetail}/>
+        <Route path="/lookGoodsStock" component={LookGoodsStock}/>
+        <Route path="/goodsStockDetail" component={GoodsStockDetail}/>
+        <Route path="/purchaseStore" component={PurchaseStoreManagement}/>
+        <Route path="/purchaseStoreDetail" component={PurchaseStoreDetail}/>
       </Route>
 
       <Route path="/producer" component={Producer}>

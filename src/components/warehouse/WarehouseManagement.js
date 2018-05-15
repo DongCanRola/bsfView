@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import {Card, Table, Form, Button, Input, message, Modal} from 'antd';
-
+import { Router, Route,IndexRoute,hashHistory,browserHistory } from 'dva/router';
 import {getAllWarehouse, addWarehouse} from '../../services/warehouseApi';
 
 const FormItem = Form.Item;
@@ -52,7 +52,10 @@ export default class WarehouseManagement extends React.Component {
       addVisible: false,
       warehouseData: [],
       selectedRowKeys: [],
+      selectedRows: [],
       loadingWarehouse: true,
+      //进货存储选择可见
+      purchaseStoreVisible: window.sessionStorage.getItem("purchase_store_order_id") !== null ? 'inline':'none',
       column: [
         {
           title: "编号",
@@ -97,9 +100,10 @@ export default class WarehouseManagement extends React.Component {
     })
   }
 
-  onSelectChangeWarehouse(selectedRowKeys) {
+  onSelectChangeWarehouse(selectedRowKeys, selectedRows) {
     console.log("selectedRowKeys changed: ", selectedRowKeys);
-    this.setState({selectedRowKeys});
+    console.log("selectedRows changed: ", selectedRows);
+    this.setState({selectedRowKeys, selectedRows});
   }
 
   saveFormRef = (form) => {
@@ -133,6 +137,27 @@ export default class WarehouseManagement extends React.Component {
       })
     })
   };
+
+  lookStockDetail() {
+    let warehouse = this.state.selectedRowKeys;
+    if(warehouse.length !== 1) {
+      message.warning("请选择一个要查看的仓库", 2);
+    } else {
+      window.sessionStorage.setItem("look_warehouseStockDetail", warehouse[0]);
+      browserHistory.push({pathname: '/warehouseStockDetail'});
+    }
+  }
+
+  purchaseStoreConfirm() {
+    let warehouse = this.state.selectedRows;
+    if(warehouse.length !== 1) {
+      message.warning("请选择一个仓库进行存储！", 2);
+    } else {
+      window.sessionStorage.setItem("purchase_store_warehouse", warehouse[0].warehouse_id);
+      window.sessionStorage.setItem("warehouse_spare", warehouse[0].warehouse_spare);
+      browserHistory.push({pathname: '/purchaseStore'})
+    }
+  }
 
   render() {
 
@@ -168,6 +193,26 @@ export default class WarehouseManagement extends React.Component {
               }
             >
               新增仓库
+            </Button>
+            <Button
+              style={{width: 120, marginRight: 5, marginLeft: 10}}
+              onClick={
+                () => {
+                  this.lookStockDetail()
+                }
+              }
+            >
+              查看详情
+            </Button>
+            <Button
+              style={{width: 120, marginRight: 5, marginLeft: 10, display: this.state.purchaseStoreVisible}}
+              onClick={
+                () => {
+                  this.purchaseStoreConfirm()
+                }
+              }
+            >
+              确定
             </Button>
           </div>
         }

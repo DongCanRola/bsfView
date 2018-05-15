@@ -63,8 +63,10 @@ const Buyer =React.createClass({
                 <Menu.Item key="buyReachedOrders"><Link to="/reachedOrderManagement">到货订单</Link></Menu.Item>
                 <Menu.Item key="buySavedOrders"><Link to="/savedOrderManagement">入库订单</Link></Menu.Item>
                 <Menu.Item key="buyCancelledOrders"><Link to="/cancelledOrderManagement">已取消订单</Link></Menu.Item>
-                <Menu.Item key="buyPartedreOrders"><Link to="/partedreOrderManagement">部分退货订单</Link></Menu.Item>
-                <Menu.Item key="buyAllreOrders"><Link to="/allreOrderManagement">完全退货订单</Link></Menu.Item>
+                {
+                  //<Menu.Item key="buyPartedreOrders"><Link to="/partedreOrderManagement">部分退货订单</Link></Menu.Item>
+                  //<Menu.Item key="buyAllreOrders"><Link to="/allreOrderManagement">完全退货订单</Link></Menu.Item>
+                }
               </SubMenu>
 
             </Menu>

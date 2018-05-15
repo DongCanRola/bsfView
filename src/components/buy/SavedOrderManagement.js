@@ -66,7 +66,7 @@ export default class SavedOrderManagement extends React.Component {
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange.bind(this)
-    }
+    };
 
     return (
       <Card

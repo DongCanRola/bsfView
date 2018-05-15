@@ -14,7 +14,10 @@ export default class ReachedOrderManagement extends React.Component {
       reachedData: [],
       loadingData: true,
       selectedRowKeys: [],
-      column: orderColumn()
+      column: orderColumn(),
+
+      orderVisible: window.sessionStorage.getItem("currentRole") === '4' ? 'inline':'none',
+      storeVisible: window.sessionStorage.getItem("currentRole") === '5' ? 'inline':'none'
     };
     this.setData();
   }
@@ -107,16 +110,20 @@ export default class ReachedOrderManagement extends React.Component {
             >
               取消订单
             </Button>
-            <Button
-              style={{width: 120, marginRight: 5, marginLeft: 10}}
-              onClick={
-                () => {
-                  //this.setState({customerVisible:true});
-                }
-              }
-            >
-              退货
-            </Button>
+            {
+              /*
+               <Button
+               style={{width: 120, marginRight: 5, marginLeft: 10}}
+               onClick={
+               () => {
+               //this.setState({customerVisible:true});
+               }
+               }
+               >
+               退货
+               </Button>
+               */
+            }
           </div>
         }
       >
