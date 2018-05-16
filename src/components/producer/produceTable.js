@@ -86,3 +86,45 @@ const processList = [
 export function processColumn() {
   return processList;
 }
+
+const processMaterialList = [
+  {
+    title: "",
+    dataIndex: "list_id",
+    width: "13%"
+  },{
+    title: "",
+    dataIndex: "list_process",
+    width: "13%"
+  },{
+    title: "",
+    dataIndex: "list_goods",
+    width: "13%"
+  },{
+    title: "",
+    dataIndex: "list_total",
+    width: "13%"
+  },{
+    title: "",
+    dataIndex: "list_remaining",
+    width: "13%"
+  },{
+    title: "",
+    render:(record) => {
+      let show = "拟定中";
+      if(record.list_state === 1)
+        show = "未调度";
+      if(record.list_state === 2)
+        show = "已出库";
+      return(<span>{show}</span>);
+    },
+    width: "13%"
+  },{
+    title: "",
+    dataIndex: "list_time",
+    width: "18%"
+  }
+];
+export function processMaterialColumn() {
+  return processMaterialList;
+}
