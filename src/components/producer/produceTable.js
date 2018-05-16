@@ -60,4 +60,29 @@ export function sampleColumn() {
   return sampleList;
 }
 
-
+const processList = [
+  {
+    title: "处理编号",
+    dataIndex: "process_id",
+    width: "20%"
+  },{
+    title: "销售订单",
+    dataIndex: "sale_orderId",
+    width: "20%"
+  },{
+    title: "样本",
+    dataIndex: "sample_id",
+    width: "20%"
+  },{
+    title: "生产数量",
+    dataIndex: "process_productNum",
+    width: "20%"
+  },{
+    title: "加工处理人",
+    dataIndex: "process_userId",
+    width: "20%"
+  }
+];
+export function processColumn() {
+  return processList;
+}

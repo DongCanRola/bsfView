@@ -5,7 +5,7 @@ import React from 'react';
 import {Card, Table, Collapse, Button, Modal, Input, message, Form} from 'antd';
 import { Router, Route,IndexRoute,hashHistory,browserHistory } from 'dva/router';
 import {getMaterial, addMaterial} from '../../services/goodsApi';
-import {addSample} from '../../services/produceApi';
+import {addSample, updateStateOfProcess, addProcessMaterialList} from '../../services/produceApi';
 
 const Panel = Collapse.Panel;
 const customPanelStyle = {
@@ -106,7 +106,13 @@ export default class MaterialManagement extends React.Component {
       //打样参考
       sampleVisible: window.sessionStorage.getItem("currentRole") === '6' && window.sessionStorage.getItem("product_id") !== null ? 'inline':'none',
       sampleUseVisible: window.sessionStorage.getItem("sample_new_id") !== null ? 'inline':'none',//打样消耗
-      newSampleVisible: false
+      newSampleVisible: false,
+
+      //增加加工材料单
+      processMaterialVisible: window.sessionStorage.getItem("process_prepare_id") !== null ? 'inline':'none',
+      processMaterialNumVisible: false,
+      processMaterialNum: '',
+      processMaterialKind: ''
     };
     this.setData("1");
     this.setData("2");
@@ -240,9 +246,6 @@ export default class MaterialManagement extends React.Component {
   useGoodsRecord(type) {
 
   }
-  recordComplete() {
-    window.sessionStorage.removeItem("sample_new_id");
-  }
 
   saveFormRef = (form) => {
     this.form = form;
@@ -278,6 +281,64 @@ export default class MaterialManagement extends React.Component {
   handleSampleCancel = () => {
     this.setState({newSampleVisible: false});
     window.history.back();
+  };
+
+  confirmMaterialList() {
+    let obj = {
+      process_id: window.sessionStorage.getItem("process_prepare_id"),
+      process_state: '2'
+    };
+    updateStateOfProcess(obj).then(resp => {
+      console.log("confirm material lists of process result: ", resp.data.entity);
+      if(resp.data.entity.result === 'ok') {
+        message.success("确认材料单成功！", 2);
+        window.sessionStorage.removeItem("process_prepare_id");
+        browserHistory.push({pathname: '/produceMaterial'});
+      }
+    }).catch(() => {
+      message.warning("确认加工所需全部材料单失败！", 2);
+    })
+  }
+  confirmNeed(type){
+    let items = [];
+    if(type === '1')
+      items = this.state.selectedRawRowKeys;
+    if(type === '2')
+      items = this.state.selectedMakingsRowKeys;
+    if(items.length !== 1) {
+      message.warning("请选择一种材料！", 2);
+    } else {
+      this.setState({
+        processMaterialKind: items[0],
+        processMaterialNumVisible: true
+      });
+    }
+  }
+  getMaterialNum(inValue) {
+    console.log("material required num: ", inValue);
+    this.setState({processMaterialNum: inValue});
+  }
+  handleMaterialNumSubmit = () => {
+    let obj = {
+      list_process: window.sessionStorage.getItem("process_prepare_id"),
+      list_goods: this.state.processMaterialKind,
+      list_total: this.state.processMaterialNum,
+      list_state: '3'
+    };
+    addProcessMaterialList(obj).then(resp => {
+      console.log("add process material list result: ", resp.data.entity);
+      if(resp.data.entity.result === 'ok') {
+        message.success("增加加工材料单成功！", 2);
+      } else {
+        message.warning("增加加工材料单失败！", 2);
+      }
+      this.setState({processMaterialNumVisible: false});
+    }).catch(() => {
+      message.warning("增加加工材料单失败！", 2);
+    })
+  };
+  handleMaterialNumCancel = () => {
+    this.setState({processMaterialNumVisible: false});
   };
 
   render() {
@@ -331,6 +392,27 @@ export default class MaterialManagement extends React.Component {
               拟定样本
             </Button>
             <Button
+              style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.processMaterialVisible}}
+              onClick={
+                () => {
+                  this.confirmMaterialList()
+                }
+              }
+            >
+              完成材料单
+            </Button>
+            <Button
+              style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.processMaterialVisible}}
+              onClick={
+                () => {
+                  window.sessionStorage.removeItem("process_prepare_id");
+                  window.history.back();
+                }
+              }
+            >
+              返回
+            </Button>
+            <Button
               style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.sampleUseVisible}}
               onClick={
                 () => {
@@ -351,6 +433,14 @@ export default class MaterialManagement extends React.Component {
             onCancel={this.handleSampleCancel}
             onCreate={this.handleSampleCreate}
           />
+          <Modal
+            visible={this.state.processMaterialNumVisible}
+            title="需求数量"
+            onOk={() => {this.handleMaterialNumSubmit()}}
+            onCancel={() => {this.handleMaterialNumCancel()}}
+          >
+            <Input id="materialNum" onChange={value => this.getMaterialNum(value.target.value)}/>
+          </Modal>
           <Collapse bordered={false} defaultActiveKey={["1","2"]} style={{marginTop: 30}}>
             <Panel header="原料种类" key="1" style={customPanelStyle}>
               <Card
@@ -403,11 +493,22 @@ export default class MaterialManagement extends React.Component {
                       style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.sampleUseVisible}}
                       onClick={
                         () => {
-                          this.useGoodsRecord('1')
+                          //this.useGoodsRecord('1')
+                          this.lookMaterialStoreDetail('1')
                         }
                       }
                     >
                       增加消耗
+                    </Button>
+                    <Button
+                      style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.processMaterialVisible}}
+                      onClick={
+                        () => {
+                          this.confirmNeed('1')
+                        }
+                      }
+                    >
+                      确定需要
                     </Button>
                   </div>
                 }
@@ -488,11 +589,22 @@ export default class MaterialManagement extends React.Component {
                       style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.sampleUseVisible}}
                       onClick={
                         () => {
-                          this.useGoodsRecord('2')
+                          //this.useGoodsRecord('2')
+                          this.lookMaterialStoreDetail('2')
                         }
                       }
                     >
                       增加消耗
+                    </Button>
+                    <Button
+                      style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.processMaterialVisible}}
+                      onClick={
+                        () => {
+                          this.confirmNeed('2')
+                        }
+                      }
+                    >
+                      确定需要
                     </Button>
                   </div>
                 }
