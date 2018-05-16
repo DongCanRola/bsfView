@@ -147,6 +147,27 @@ export default class ProduceMaterial extends React.Component {
     browserHistory.push({pathname: '/processMaterialList'});
   }
 
+  beginProduce() {
+    let items = this.state.selectedDoneRowKeys;
+    for(let item of items) {
+      let obj = {
+        process_id: item,
+        process_state: '4'
+      };
+      updateStateOfProcess(obj).then(resp => {
+        console.log("begin process result: ", resp.data.entity);
+        if(resp.data.entity.result === 'ok') {
+          message.success("成功进入加工！", 2);
+          this.setData('3');
+        } else {
+          message.success("操作失败！", 2);
+        }
+      }).catch(() => {
+        message.warning("进入加工失败！", 2);
+      })
+    }
+  }
+
   render() {
 
     const paginationWait = {
@@ -320,7 +341,7 @@ export default class ProduceMaterial extends React.Component {
                       style={{width: 120, marginRight: 5, marginLeft: 10}}
                       onClick={
                         () => {
-
+                          this.beginProduce()
                         }
                       }
                     >
