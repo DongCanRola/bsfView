@@ -3,9 +3,10 @@
  */
 import React from 'react';
 import {Card, Table, Button, message, Modal, Input} from 'antd';
+import { Router, Route,IndexRoute,hashHistory,browserHistory } from 'dva/router';
 
 import {purchaseStoreColumn} from './warehouseTable';
-import {getPurchaseStoreListByGoods} from '../../services/warehouseApi';
+import {getPurchaseStoreListByGoods, fetchProcessMaterial} from '../../services/warehouseApi';
 import {recordSampleUse} from '../../services/produceApi';
 
 export default class MaterialStoreDetail extends React.Component {
@@ -17,9 +18,14 @@ export default class MaterialStoreDetail extends React.Component {
       storeDetailData: [],
       loadingData: true,
       selectedRowKeys: [],
+      selectedRows: [],
       spendVisible: window.sessionStorage.getItem("sample_new_id") !== null ? 'inline':'none',
       spendRecord: false,
-      spendNum: ''
+      spendNum: '',
+
+      fetchVisible: window.sessionStorage.getItem("materialList_fetch_id") !== null ? 'inline':'none',
+      fetchInput: false,
+      fetchNum: ''
     };
     this.setData();
   }
@@ -49,9 +55,10 @@ export default class MaterialStoreDetail extends React.Component {
     })
   }
 
-  onSelectChange(selectedRowKeys) {
+  onSelectChange(selectedRowKeys, selectedRows) {
     console.log("selectedRowKeys changed: ", selectedRowKeys);
-    this.setState({selectedRowKeys});
+    console.log("selectedRows changed: ", selectedRows);
+    this.setState({selectedRowKeys, selectedRows});
   }
 
   beginToRecord() {
@@ -93,6 +100,54 @@ export default class MaterialStoreDetail extends React.Component {
       spendNum: inValue
     });
   }
+
+  executeFetch() {
+    let items = this.state.selectedRowKeys;
+    if(items.length !== 1) {
+      message.warning("请选择一项出库！", 2);
+    } else {
+      this.setState({
+        fetchInput: true
+      });
+    }
+  }
+  getFetchInput(inValue) {
+    console.log("fetch num: ", inValue);
+    this.setState({
+      fetchNum: inValue
+    });
+  }
+  handleFetchSubmit = () => {
+    if(this.state.fetchNum > window.sessionStorage.getItem("materialList_fetch_remaining" ||
+      this.state.fetchNum > this.state.selectedRows[0].purchase_storeRemaining)) {
+      message.warning("调度数量过多！", 2);
+    } else {
+      let obj = {
+        use_listId: window.sessionStorage.getItem("materialList_fetch_id"),
+        use_storeId: this.state.selectedRowKeys[0],
+        use_num: this.state.fetchNum,
+        use_user: window.sessionStorage.getItem("userId")
+      };
+      fetchProcessMaterial(obj).then(resp => {
+        console.log("fetch material result: ", resp.data.entity);
+        if(resp.data.entity.result === 'ok') {
+          message.success("加工材料调度成功!", 2);
+          this.setState({fetchInput: false});
+          window.sessionStorage.removeItem("materialList_fetch_id");
+          window.sessionStorage.removeItem("materialList_fetch_goods");
+          window.sessionStorage.removeItem("materialList_fetch_remaining");
+          browserHistory.push({pathname: '/materialFetchManagement'});
+        } else {
+          message.warning("加工材料调度失败！", 2);
+        }
+      }).catch(() => {
+        message.warning("加工材料调度失败！", 2);
+      })
+    }
+  };
+  handleFetchCancel = () => {
+    this.setState({fetchInput: false});
+  };
 
   render() {
 
@@ -139,6 +194,16 @@ export default class MaterialStoreDetail extends React.Component {
             >
               返回
             </Button>
+            <Button
+              style={{width: 120, marginRight: 5, marginLeft: 10, display: this.state.fetchVisible}}
+              onClick={
+                () => {
+                  this.executeFetch()
+                }
+              }
+            >
+              加工出库
+            </Button>
           </div>
         }
       >
@@ -149,6 +214,14 @@ export default class MaterialStoreDetail extends React.Component {
           onCancel={() => {this.handleRecordCancel()}}
         >
           <Input id="recordNum" onChange={value => this.getNum(value.target.value)}/>
+        </Modal>
+        <Modal
+          visible={this.state.fetchInput}
+          title="加工出库"
+          onOk={() => {this.handleFetchSubmit()}}
+          onCancel={() => {this.handleFetchCancel()}}
+        >
+          <Input id="fetchNum" onChange={value => this.getFetchInput(value.target.value)}/>
         </Modal>
         <Table
           rowSelection={rowSelection}

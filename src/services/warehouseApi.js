@@ -74,3 +74,24 @@ export async function storePurchase(obj) {
   };
   return post("/api/warehouse/purchase/store", headers, body);
 }
+
+export async function fetchProcessMaterial(obj) {
+  let headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  headers.append('Accept', 'application/json');
+  let body = {
+    use_listId: obj.use_listId,
+    use_storeId: obj.use_storeId,
+    use_num: obj.use_num,
+    use_user: obj.use_user
+  };
+  return post("/api/warehouse/process/materialUse/add", headers, body);
+}
+
+export async function getMaterialUseListByProcessOrder(listId) {
+  let headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  headers.append('Accept', 'application/json');
+  headers.set("processOrderId", listId);
+  return get("/api/warehouse/process/materialUse/processOrderList", headers);
+}

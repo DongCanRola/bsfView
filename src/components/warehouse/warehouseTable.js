@@ -136,3 +136,34 @@ const purchaseStoreList = [
 export function purchaseStoreColumn() {
   return purchaseStoreList;
 }
+
+const processMaterialFetchList = [
+  {
+    title: "编号",
+    dataIndex: "use_Id",
+    width: "15%"
+  },{
+    title: "加工材料单",
+    dataIndex: "use_listId",
+    width: "15%"
+  },{
+    title: "进货存储分配",
+    dataIndex: "use_storeId",
+    width: "15%"
+  },{
+    title: "调用数量",
+    dataIndex: "use_num",
+    width: "15%"
+  },{
+    title: "调用时间",
+    dataIndex: "use_time",
+    width: "20%"
+  },{
+    title: "调用人",
+    dataIndex: "use_user",
+    width: "15%"
+  }
+];
+export function processMaterialFetchColumn() {
+  return processMaterialFetchList;
+}

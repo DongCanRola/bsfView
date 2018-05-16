@@ -100,3 +100,11 @@ export async function addProcessMaterialList(obj) {
   return post("/api/process/process/material/add", headers, body);
 }
 
+export async function getMaterialListByState(state) {
+  let headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  headers.append('Accept', 'application/json');
+  headers.set("list_state", state);
+  return get("/api/process/process/material/stateList", headers);
+}
+

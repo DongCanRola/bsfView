@@ -75,7 +75,7 @@ const WarehouseKeeper =React.createClass({
                 key="fetch"
                 title={<span><Icon type="scan" /><span className="nav-text">出库管理</span></span>}
               >
-                <Menu.Item key="produceFetch"><Link>加工出库</Link></Menu.Item>
+                <Menu.Item key="materialFetch"><Link to="/materialFetchManagement">加工出库</Link></Menu.Item>
                 <Menu.Item key="productSend"><Link>成品发货</Link></Menu.Item>
               </SubMenu>
             </Menu>

@@ -89,27 +89,27 @@ export function processColumn() {
 
 const processMaterialList = [
   {
-    title: "",
+    title: "编号",
     dataIndex: "list_id",
     width: "13%"
   },{
-    title: "",
+    title: "加工编号",
     dataIndex: "list_process",
     width: "13%"
   },{
-    title: "",
+    title: "原料",
     dataIndex: "list_goods",
     width: "13%"
   },{
-    title: "",
+    title: "需要总量",
     dataIndex: "list_total",
     width: "13%"
   },{
-    title: "",
+    title: "仍需数量",
     dataIndex: "list_remaining",
     width: "13%"
   },{
-    title: "",
+    title: "状态",
     render:(record) => {
       let show = "拟定中";
       if(record.list_state === 1)
@@ -120,7 +120,7 @@ const processMaterialList = [
     },
     width: "13%"
   },{
-    title: "",
+    title: "拟定时间",
     dataIndex: "list_time",
     width: "18%"
   }
