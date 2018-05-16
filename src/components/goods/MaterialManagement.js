@@ -2,9 +2,10 @@
  * Created by dongc_000 on 2018/5/1.
  */
 import React from 'react';
-import {Card, Table, Collapse, Button, Modal, Input, message} from 'antd';
+import {Card, Table, Collapse, Button, Modal, Input, message, Form} from 'antd';
 import { Router, Route,IndexRoute,hashHistory,browserHistory } from 'dva/router';
 import {getMaterial, addMaterial} from '../../services/goodsApi';
+import {addSample} from '../../services/produceApi';
 
 const Panel = Collapse.Panel;
 const customPanelStyle = {
@@ -13,6 +14,53 @@ const customPanelStyle = {
   fontSize:"14px",
   fontColor:''
 };
+
+const FormItem = Form.Item;
+const SampleForm = Form.create() (
+  (props) => {
+    const { visible, onCancel, onCreate, form } = props;
+    const { getFieldDecorator } = form;
+    return (
+      <Modal
+        visible={visible}
+        title="拟定成品样本"
+        onCancel={onCancel}
+        onOk={onCreate}
+      >
+        <Form layout="vertical">
+          <FormItem label="加工描述">
+            {getFieldDecorator('procedureDescription',{
+              rules: [{required: true, message: '请输入加工成分描述信息！'}],
+            })(
+              <Input/>
+            )}
+          </FormItem>
+          <FormItem label="材料成本">
+            {getFieldDecorator('procedureMaterialCost',{
+              rules: [{required: true, message: '请输入材料成本！'}],
+            })(
+              <Input/>
+            )}
+          </FormItem>
+          <FormItem label="加工成本">
+            {getFieldDecorator('procedureProcessCost',{
+              rules: [{required: true, message: '请输入加工过程成本！'}],
+            })(
+              <Input/>
+            )}
+          </FormItem>
+          <FormItem label="人力成本">
+            {getFieldDecorator('procedureHumanCost',{
+              rules: [{required: true, message: '请输入人力成本！'}],
+            })(
+              <Input/>
+            )}
+          </FormItem>
+        </Form>
+      </Modal>
+    )
+  }
+);
 
 export default class MaterialManagement extends React.Component {
   constructor(props) {
@@ -53,7 +101,12 @@ export default class MaterialManagement extends React.Component {
       ],
 
       addRawName: "",
-      addMakingsName: ""
+      addMakingsName: "",
+
+      //打样参考
+      sampleVisible: window.sessionStorage.getItem("currentRole") === '6' && window.sessionStorage.getItem("product_id") !== null ? 'inline':'none',
+      sampleUseVisible: window.sessionStorage.getItem("sample_new_id") !== null ? 'inline':'none',//打样消耗
+      newSampleVisible: false
     };
     this.setData("1");
     this.setData("2");
@@ -168,6 +221,65 @@ export default class MaterialManagement extends React.Component {
     }
   }
 
+  lookMaterialStoreDetail(type) {
+    let goods = [];
+    if(type === '1') {
+      goods = this.state.selectedRawRowKeys;
+    }
+    if(type === '2') {
+      goods = this.state.selectedMakingsRowKeys;
+    }
+    if(goods.length !== 1) {
+      message.warning("请选择一个要查看的材料！", 2);
+    } else {
+      window.sessionStorage.setItem("look_material_purchaseStore", goods[0]);
+      browserHistory.push({pathname: '/materialStoreDetail'});
+    }
+  }
+
+  useGoodsRecord(type) {
+
+  }
+  recordComplete() {
+    window.sessionStorage.removeItem("sample_new_id");
+  }
+
+  saveFormRef = (form) => {
+    this.form = form;
+  };
+  handleSampleCreate = () => {
+    const form = this.form;
+    form.validateFields((err, values) => {
+      if(err) {
+        return;
+      }
+      let obj = {
+        sample_productId: window.sessionStorage.getItem("product_id"),
+        sample_description: values.procedureDescription,
+        sample_materialCost: values.procedureMaterialCost,
+        sample_processCost: values.procedureProcessCost,
+        sample_humanCost: values.procedureHumanCost,
+        sample_userId: window.sessionStorage.getItem("userId")
+      };
+      addSample(obj).then(resp => {
+        console.log("add sample result: ", resp.data.entity);
+        if(resp.data.entity.result === 'ok') {
+          message.success("增加样本成功，请记录打样消耗！", 5);
+          window.sessionStorage.setItem("sample_new_id", resp.data.entity.message);
+          this.setState({sampleUseVisible: 'inline'});
+        } else {
+          message.warning("增加样本失败！", 2);
+        }
+      }).catch(() => {
+        message.warning("增加样本失败！", 2);
+      })
+    })
+  };
+  handleSampleCancel = () => {
+    this.setState({newSampleVisible: false});
+    window.history.back();
+  };
+
   render() {
 
     const paginationRaw = {
@@ -205,8 +317,40 @@ export default class MaterialManagement extends React.Component {
     };
 
     return (
-      <Card>
+      <Card
+        extra={
+          <div>
+            <Button
+              style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.sampleVisible}}
+              onClick={
+                () => {
+                  this.setState({newSampleVisible: true});
+                }
+              }
+            >
+              拟定样本
+            </Button>
+            <Button
+              style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.sampleUseVisible}}
+              onClick={
+                () => {
+                  window.sessionStorage.removeItem("sample_new_id");
+                  browserHistory.push({pathname: '/productSampleList'});
+                }
+              }
+            >
+              记录完成
+            </Button>
+          </div>
+        }
+      >
         <div>
+          <SampleForm
+            ref={this.saveFormRef}
+            visible={this.state.newSampleVisible}
+            onCancel={this.handleSampleCancel}
+            onCreate={this.handleSampleCreate}
+          />
           <Collapse bordered={false} defaultActiveKey={["1","2"]} style={{marginTop: 30}}>
             <Panel header="原料种类" key="1" style={customPanelStyle}>
               <Card
@@ -244,6 +388,26 @@ export default class MaterialManagement extends React.Component {
                       }
                     >
                       返回
+                    </Button>
+                    <Button
+                      style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.sampleVisible}}
+                      onClick={
+                        () => {
+                          this.lookMaterialStoreDetail('1')
+                        }
+                      }
+                    >
+                      查看存储
+                    </Button>
+                    <Button
+                      style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.sampleUseVisible}}
+                      onClick={
+                        () => {
+                          this.useGoodsRecord('1')
+                        }
+                      }
+                    >
+                      增加消耗
                     </Button>
                   </div>
                 }
@@ -309,6 +473,26 @@ export default class MaterialManagement extends React.Component {
                       }
                     >
                       返回
+                    </Button>
+                    <Button
+                      style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.sampleVisible}}
+                      onClick={
+                        () => {
+                          this.lookMaterialStoreDetail('2')
+                        }
+                      }
+                    >
+                      查看存储
+                    </Button>
+                    <Button
+                      style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.sampleUseVisible}}
+                      onClick={
+                        () => {
+                          this.useGoodsRecord('2')
+                        }
+                      }
+                    >
+                      增加消耗
                     </Button>
                   </div>
                 }

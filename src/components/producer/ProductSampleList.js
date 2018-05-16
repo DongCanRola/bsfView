@@ -3,8 +3,8 @@
  */
 import React from 'react';
 import {Card, Table, Button, message, Modal, Form} from 'antd';
-
-import {getSampleOfProduct} from '../../services/produceApi';
+import { Router, Route,IndexRoute,hashHistory,browserHistory } from 'dva/router';
+import {getSampleOfProduct, confirmNewSample} from '../../services/produceApi';
 import {sampleColumn} from './produceTable';
 
 export default class ProductSampleList extends React.Component {
@@ -47,12 +47,31 @@ export default class ProductSampleList extends React.Component {
     })
   }
 
-  addSample() {
-
-  }
-
   confirmSample() {
-
+    let samples = this.state.selectedRowKeys;
+    if(samples.length !== 1) {
+      message.warning("请确定一个样本！", 2);
+    } else {
+      let obj = {
+        sale_orderId: window.sessionStorage.getItem("sale_sample_order_id"),
+        sample_id: samples[0],
+        process_state: '1',
+        process_userId: window.sessionStorage.getItem("userId")
+      };
+      confirmNewSample(obj).then(resp => {
+        console.log("confirm sample result: ", resp.data.entity);
+        if(resp.data.entity.result === 'ok') {
+          message.success("成功确定样本！", 2);
+          window.sessionStorage.removeItem("sale_sample_order_id");
+          window.sessionStorage.removeItem("product_id");
+          browserHistory.push({pathname: '/saleOrderSample'});
+        } else {
+          message.warning("确定打样失败！", 2);
+        }
+      }).catch(() => {
+        message.warning("确定打样失败！", 2);
+      })
+    }
   }
 
   onSelectChange(selectedRowKeys) {
@@ -89,14 +108,14 @@ export default class ProductSampleList extends React.Component {
               style={{width: 120, marginRight: 5, marginLeft: 10}}
               onClick={
                 () => {
-                  this.addSample()
+                  browserHistory.push({pathname: '/materialManagement'});
                 }
               }
             >
               增加
             </Button>
             <Button
-              style={{width: 120, marginRight: 5, marginLeft: 10}}
+              style={{width: 120, marginRight: 5, marginLeft: 10, display: 'none'}}
               onClick={
                 () => {
 
@@ -106,14 +125,14 @@ export default class ProductSampleList extends React.Component {
               增加消耗
             </Button>
             <Button
-              style={{width: 120, marginRight: 5, marginLeft: 10}}
+              style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.saleVisible}}
               onClick={
                 () => {
-
+                  window.history.back();
                 }
               }
             >
-              更新
+              返回
             </Button>
             <Button
               style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.saleVisible}}
@@ -123,7 +142,7 @@ export default class ProductSampleList extends React.Component {
                 }
               }
             >
-              确定
+              确定打样
             </Button>
           </div>
         }

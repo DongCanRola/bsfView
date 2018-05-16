@@ -50,7 +50,14 @@ export default class SaleOrderSample extends React.Component {
   }
 
   executeSample() {
-
+    let orders = this.state.selectedRows;
+    if(orders.length !== 1) {
+      message.warning("请选择一个订单进行打样！", 2);
+    } else {
+      window.sessionStorage.setItem("sale_sample_order_id", orders[0].sale_orderId);
+      window.sessionStorage.setItem("product_id", orders[0].sale_productId);
+      browserHistory.push({pathname: '/productSampleList'});
+    }
   }
 
   render() {

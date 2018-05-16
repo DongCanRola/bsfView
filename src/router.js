@@ -41,6 +41,7 @@ import SaleOrderSample from './components/producer/SaleOrderSample';
 import ProduceMaterial from './components/producer/ProduceMaterial';
 import ProduceProcedure from './components/producer/ProduceProcedure';
 import ProductSampleList from './components/producer/ProductSampleList';
+import MaterialStoreDetail from './components/warehouse/MaterialStoreDetail';
 
 import Accountant from './routes/Accountant';
 import PurchasePayManagement from './components/account/PurchasePayManagement';
@@ -119,6 +120,7 @@ function RouterConfig({ history }) {
         <Route path="/produceMaterial" component={ProduceMaterial}/>
         <Route path="/produceProcedure" component={ProduceProcedure}/>
         <Route path="/productSampleList" component={ProductSampleList}/>
+        <Route path="/materialStoreDetail" component={MaterialStoreDetail}/>
       </Route>
 
       <Route path="/accountant" component={Accountant}>

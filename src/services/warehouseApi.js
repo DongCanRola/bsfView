@@ -53,6 +53,14 @@ export async function getPurchaseStoreListByPurchase(purchaseId) {
   return get("/api/warehouse/purchase/store/purchaseList", headers);
 }
 
+export async function getPurchaseStoreListByGoods(goodsId) {
+  let headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  headers.append('Accept', 'application/json');
+  headers.set("goods_id", goodsId);
+  return get("/api/warehouse/purchase/storeByGoods", headers);
+}
+
 export async function storePurchase(obj) {
   let headers = new Headers();
   headers.append('Content-Type', "application/json");
