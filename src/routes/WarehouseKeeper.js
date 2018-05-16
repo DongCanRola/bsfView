@@ -68,7 +68,7 @@ const WarehouseKeeper =React.createClass({
                 title={<span><Icon type="scan" /><span className="nav-text">入库管理</span></span>}
               >
                 <Menu.Item key="purchaseStore"><Link to="/purchaseStore">进货入库</Link></Menu.Item>
-                <Menu.Item key="productStore"><Link>成品入库</Link></Menu.Item>
+                <Menu.Item key="productStore"><Link to="/productStoreManagement">成品入库</Link></Menu.Item>
               </SubMenu>
 
               <SubMenu
@@ -76,7 +76,7 @@ const WarehouseKeeper =React.createClass({
                 title={<span><Icon type="scan" /><span className="nav-text">出库管理</span></span>}
               >
                 <Menu.Item key="materialFetch"><Link to="/materialFetchManagement">加工出库</Link></Menu.Item>
-                <Menu.Item key="productSend"><Link>成品发货</Link></Menu.Item>
+                <Menu.Item key="productSend"><Link to="/productSendManagement">成品发货</Link></Menu.Item>
               </SubMenu>
             </Menu>
           </Sider>

@@ -37,6 +37,10 @@ import PurchaseStoreManagement from './components/warehouse/PurchaseStoreManagem
 import PurchaseStoreDetail from './components/warehouse/PurchaseStoreDetail';
 import MaterialFetchManagement from './components/warehouse/MaterialFetchManagement';
 import MaterialFetchDetail from './components/warehouse/MaterialFetchDetail';
+import ProductStoreManagement from './components/warehouse/ProductStoreManagement';
+import ProductStoreDetail from './components/warehouse/ProductStoreDetail';
+import ProductSendManagement from './components/warehouse/ProductSendManagement';
+import ProductSendDetail from './components/warehouse/ProductSendDetail';
 
 import Producer from './routes/Producer';
 import SaleOrderSample from './components/producer/SaleOrderSample';
@@ -117,6 +121,10 @@ function RouterConfig({ history }) {
         <Route path="/materialFetchManagement" component={MaterialFetchManagement}/>
         <Route path="/materialStoreDetail" component={MaterialStoreDetail}/>
         <Route path="/materialFetchDetail" component={MaterialFetchDetail}/>
+        <Route path="/productStoreManagement" component={ProductStoreManagement}/>
+        <Route path="/productStoreDetail" component={ProductStoreDetail}/>
+        <Route path="/productSendManagement" component={ProductSendManagement}/>
+        <Route path="/productSendDetail" component={ProductSendDetail}/>
       </Route>
 
       <Route path="/producer" component={Producer}>

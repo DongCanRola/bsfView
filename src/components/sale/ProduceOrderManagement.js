@@ -149,7 +149,7 @@ export default class ProduceOrderManagement extends React.Component {
               bordered
               pagination={paginationDone}
               scroll={{x: 1000, y: 1000}}
-              loading={this.state.loadingDones}
+              loading={this.state.loadingDone}
               rowKey={"sale_orderId"}
             />
           </Card>
