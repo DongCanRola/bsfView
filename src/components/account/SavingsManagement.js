@@ -153,7 +153,7 @@ export default class SavingsManagement extends React.Component {
       message.warning("请选择一个账户！", 2);
     } else {
       window.sessionStorage.setItem("gather_savings", savings[0].savings_id);
-      browserHistory.push({pathname: '/saleGatherManagement'});
+      browserHistory.push({pathname: '/saleGather'});
     }
   }
 
