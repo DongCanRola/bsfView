@@ -54,7 +54,7 @@ export async function getSaleGatherList() {
   let headers = new Headers();
   headers.append('Content-Type', "application/json");
   headers.append('Accept', 'application/json');
-  return ("/api/sale/gather/list", headers);
+  return get("/api/sale/gather/list", headers);
 }
 
 export async function getSaleGatherDetailList(gatherId) {

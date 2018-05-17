@@ -2,7 +2,7 @@
  * Created by dongc_000 on 2018/5/8.
  */
 import React from 'react';
-import {Card, Table, Button, message, Modal} from 'antd';
+import {Card, Table, Button, message, Modal, Input} from 'antd';
 import { Router, Route,IndexRoute,hashHistory,browserHistory } from 'dva/router';
 
 import {getSaleGatherList, addSaleGatherDetail} from '../../services/accountApi';
@@ -15,35 +15,35 @@ export default class SaleGatherManagement extends React.Component {
       gatherData: [],
       column: [
         {
-          title: "",
+          title: "编号",
           dataIndex: "gather_id",
           width: "10%"
         },{
-          title: "",
+          title: "销售单",
           dataIndex: "gather_saleId",
           width: "10%"
         },{
-          title: "",
+          title: "计划总额",
           dataIndex: "gather_planTotal",
           width: "10%"
         },{
-          title: "",
+          title: "折扣",
           dataIndex: "gather_discount",
           width: "10%"
         },{
-          title: "",
+          title: "实际总额",
           dataIndex: "gather_actualTotal",
           width: "10%"
         },{
-          title: "",
+          title: "已收",
           dataIndex: "gather_already",
           width: "10%"
         },{
-          title: "",
+          title: "待收",
           dataIndex: "gather_surplus",
           width: "10%"
         },{
-          title: "",
+          title: "订单时间",
           dataIndex: "gather_saleTime",
           width: "25%"
         }
@@ -152,7 +152,7 @@ export default class SaleGatherManagement extends React.Component {
   render() {
 
     const pagination = {
-      total: this.state.purchasePayData.length,
+      total: this.state.gatherData.length,
       showSizeChanger: true,
       onShowSizeChange(current, pageSize) {
         console.log('Current: ', current, '; PageSize: ', pageSize)

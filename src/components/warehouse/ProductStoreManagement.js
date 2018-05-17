@@ -76,7 +76,7 @@ export default class ProductStoreManagement extends React.Component {
     let warehouse_spare = window.sessionStorage.getItem("sale_warehouse_spare");
     let sale_wait = window.sessionStorage.getItem("sale_store_wait_num");
     let store_num = this.state.storeNum;
-    if(store_num > warehouse_spare || store_num > sale_wait) {
+    if(parseInt(store_num) > parseInt(warehouse_spare) || parseInt(store_num) > parseInt(sale_wait)) {
       message.warning("存入数量过多！", 2);
     } else {
       let obj = {

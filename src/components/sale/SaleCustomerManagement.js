@@ -289,101 +289,58 @@ export default class SaleCustomerManagement extends React.Component {
     };
 
     return (
-      <Card>
-        <div>
-          <Collapse bordered={false} defaultActiveKey={["1","2"]} style={{marginTop: 30}}>
-            <Panel header="客户" key="1" style={customPanelStyle}>
-              <Card title="客户列表"
-                    extra={
-                      <div>
-                        <Button
-                          style={{width: 120, marginRight: 5, marginLeft: 10}}
-                          onClick={
-                            () => {
-                              this.setState({customerVisible:true});
-                            }
-                          }
-                        >
-                          添加客户
-                        </Button>
-                        <Button
-                          style={{width: 120, marginRight: 5, marginLeft: 10, display: this.state.chooseCustomer}}
-                          onClick={
-                            () => {
-                              this.customerNext()
-                          }
-                          }
-                        >
-                          下一步
-                        </Button>
-                        <Button
-                          style={{width: 120, marginRight: 5, marginLeft: 10, display: this.state.chooseCustomer}}
-                          onClick={
-                            () => {
-                              window.history.back();
-                            }
-                          }
-                        >
-                          返回
-                        </Button>
-                      </div>
+      <Card title="客户列表"
+            extra={
+              <div>
+                <Button
+                  style={{width: 120, marginRight: 5, marginLeft: 10}}
+                  onClick={
+                    () => {
+                      this.setState({customerVisible:true});
                     }
-              >
-                <Table
-                  rowSelection={customerSelection}
-                  columns={this.state.column}
-                  dataSource={this.state.customerData}
-                  bordered
-                  pagination={paginationCustomer}
-                  scroll={{x: 1000, y: 1000}}
-                  loading={this.state.loadCustomer}
-                  rowKey={"customerId"}
-                />
-                <CustomerForm
-                  ref={this.saveCustomerFormRef}
-                  visible={this.state.customerVisible}
-                  onCancel={this.handleCustomerCancel}
-                  onCreate={this.handleCustomerCreate}
-                />
-              </Card>
-            </Panel>
-            <Panel header="代理" key="2" style={customPanelStyle}>
-              <Card title="代理列表"
-                    extra={
-                      <div>
-                        <Button
-                          style={{width: 120, marginRight: 5, marginLeft: 10}}
-                          onClick={
-                            () => {
-                              this.setState({agentVisible:true});
-                            }
-                          }
-                        >
-                          添加代理
-                        </Button>
-                      </div>
+                  }
+                >
+                  添加客户
+                </Button>
+                <Button
+                  style={{width: 120, marginRight: 5, marginLeft: 10, display: this.state.chooseCustomer}}
+                  onClick={
+                    () => {
+                      this.customerNext()
                     }
-              >
-                <Table
-                  rowSelection={agentSelection}
-                  columns={this.state.column}
-                  dataSource={this.state.agentData}
-                  bordered
-                  pagination={paginationAgent}
-                  scroll={{x: 1000, y: 1000}}
-                  loading={this.state.loadAgent}
-                  rowKey={"customerId"}
-                />
-                <AgentForm
-                  ref={this.saveAgentFormRef}
-                  visible={this.state.agentVisible}
-                  onCancel={this.handleAgentCancel}
-                  onCreate={this.handleAgentCreate}
-                />
-              </Card>
-            </Panel>
-          </Collapse>
-        </div>
+                  }
+                >
+                  下一步
+                </Button>
+                <Button
+                  style={{width: 120, marginRight: 5, marginLeft: 10, display: this.state.chooseCustomer}}
+                  onClick={
+                    () => {
+                      window.history.back();
+                    }
+                  }
+                >
+                  返回
+                </Button>
+              </div>
+            }
+      >
+        <Table
+          rowSelection={customerSelection}
+          columns={this.state.column}
+          dataSource={this.state.customerData}
+          bordered
+          pagination={paginationCustomer}
+          scroll={{x: 1000, y: 1000}}
+          loading={this.state.loadCustomer}
+          rowKey={"customerId"}
+        />
+        <CustomerForm
+          ref={this.saveCustomerFormRef}
+          visible={this.state.customerVisible}
+          onCancel={this.handleCustomerCancel}
+          onCreate={this.handleCustomerCreate}
+        />
       </Card>
     )
   }

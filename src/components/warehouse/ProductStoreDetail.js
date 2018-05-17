@@ -2,7 +2,7 @@
  * Created by dongc_000 on 2018/5/16.
  */
 import React from 'react';
-import {Card, Table, Button, message} from 'antd';
+import {Card, Table, Button, message, Modal, Input} from 'antd';
 
 import {getProductStoreBySale, sendProduct} from '../../services/warehouseApi';
 import {productStoreColumn} from './warehouseTable';
@@ -21,7 +21,9 @@ export default class ProductStoreDetail extends React.Component {
       selectedRows: [],
       sendVisible: window.sessionStorage.getItem("sale_send") !== null ? 'inline':'none',
       sendNumVisible: false,
-      sendNum: ''
+      sendNum: '',
+      send_store_id: '',
+      send_store_remaining: ''
     };
     this.setData();
   }
@@ -62,7 +64,9 @@ export default class ProductStoreDetail extends React.Component {
       message.warning("请选择要出库的存储项！", 2);
     } else {
       this.setState({
-        sendNumVisible: true
+        sendNumVisible: true,
+        send_store_id: items[0].store_id,
+        send_store_remaining: items[0].store_remaining
       });
     }
   }
@@ -74,7 +78,7 @@ export default class ProductStoreDetail extends React.Component {
   handleSendSubmit = () => {
     let send_num = this.state.sendNum;
     let store_remain = this.state.selectedRows[0].store_remaining;
-    if(send_num > store_remain) {
+    if(parseInt(send_num) > parseInt(store_remain)) {
       message.warning("数量过多！", 2);
     } else {
       let obj = {
@@ -102,7 +106,7 @@ export default class ProductStoreDetail extends React.Component {
 
   render() {
     const pagination = {
-      total: this.state.waitData.length,
+      total: this.state.storeData.length,
       showSizeChanger: true,
       onShowSizeChange(current, pageSize) {
         console.log('Current: ', current, '; PageSize: ', pageSize)
@@ -163,11 +167,11 @@ export default class ProductStoreDetail extends React.Component {
         />
         <Modal
           visible={this.state.sendNumVisible}
-          title={"订单"+this.state.lookSale+",存储项"+this.state.selectedRows[0].store_id}
+          title={"订单"+this.state.lookSale+",存储项"+this.state.send_store_id}
           onOk={() => {this.handleSendSubmit()}}
           onCancel={() => {this.handleSendCancel()}}
         >
-          <p>{"剩余存储"+this.state.selectedRows[0].store_remaining}</p>
+          <p>{"剩余存储"+this.state.send_store_remaining}</p>
           <Input id="numToSend" onChange={value => this.getSendNum(value.target.value)}/>
         </Modal>
       </Card>

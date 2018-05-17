@@ -140,7 +140,7 @@ export function purchaseStoreColumn() {
 const processMaterialFetchList = [
   {
     title: "编号",
-    dataIndex: "use_Id",
+    dataIndex: "use_id",
     width: "15%"
   },{
     title: "加工材料单",
@@ -263,23 +263,23 @@ export function productStoreColumn() {
 
 const productSendList = [
   {
-    title: "",
+    title: "编号",
     dataIndex: "send_id",
     width: "18%"
   },{
-    title: "",
+    title: "存储编号",
     dataIndex: "send_storeId",
     width: "18%"
   },{
-    title: "",
+    title: "发货数量",
     dataIndex: "send_num",
     width: "18%"
   },{
-    title: "",
+    title: "时间",
     dataIndex: "send_time",
     width: "25%"
   },{
-    title: "",
+    title: "发货人",
     dataIndex: "send_user",
     width: "18%"
   }

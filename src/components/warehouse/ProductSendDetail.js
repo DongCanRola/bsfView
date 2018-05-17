@@ -17,6 +17,7 @@ export default class ProductSendDetail extends React.Component {
       loadingData: true,
       lookSale: window.sessionStorage.getItem("sale_send_look_order_id")
     };
+    this.setData();
   }
 
   setData() {

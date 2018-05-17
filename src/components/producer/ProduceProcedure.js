@@ -109,7 +109,7 @@ export default class ProduceProcedure extends React.Component {
     } else {
       getConcreteSample(items[0].sample_id).then(resp => {
         console.log("get some sample: ", resp.data.entity);
-        let currentSample = resp.data.entity[0];
+        let currentSample = resp.data.entity;
         Modal.info({
           title: '样本'+currentSample.sample_id,
           content: (

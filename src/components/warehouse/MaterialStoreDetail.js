@@ -118,10 +118,13 @@ export default class MaterialStoreDetail extends React.Component {
     });
   }
   handleFetchSubmit = () => {
-    if(this.state.fetchNum > window.sessionStorage.getItem("materialList_fetch_remaining") ||
-      this.state.fetchNum > this.state.selectedRows[0].purchase_storeRemaining) {
-      console.log(window.sessionStorage.getItem("materialList_fetch_remaining"));
-      console.log(this.state.selectedRows[0].purchase_storeRemaining);
+    let fetch_num = this.state.fetchNum;
+    let need_remaining = window.sessionStorage.getItem("materialList_fetch_remaining");
+    let store_remaining = this.state.selectedRows[0].purchase_storeRemaining;
+    if(parseInt(fetch_num) > parseInt(need_remaining) || parseInt(fetch_num) > parseInt(store_remaining)) {
+      //console.log(window.sessionStorage.getItem("materialList_fetch_remaining"));
+      //console.log(this.state.selectedRows[0].purchase_storeRemaining);
+      //console.log(this.state.fetchNum);
       message.warning("调度数量过多！", 2);
     } else {
       let obj = {

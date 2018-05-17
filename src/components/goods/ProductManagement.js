@@ -250,130 +250,134 @@ export default class ProductManagement extends React.Component {
     };
 
     return (
-    <Collapse bordered={false} defaultActiveKey={["1","2"]} style={{marginTop: 30}}>
-      <Panel panel-primary header="成品" key="1" style={customPanelStyle}>
-        <Card
-          title="成品种类列表"
-          extra={
-            <div>
-              <Button
-                style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.operationVisible}}
-                onClick={
-                  () => {
-                    this.setState({
-                      addVisible:true,
-                      addState: '1'
-                    });
-                  }
+      <Card>
+        <div>
+          <Collapse bordered={false} defaultActiveKey={["1","2"]} style={{marginTop: 30}}>
+            <Panel panel-primary header="成品" key="1" style={customPanelStyle}>
+              <Card
+                title="成品种类列表"
+                extra={
+                  <div>
+                    <Button
+                      style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.operationVisible}}
+                      onClick={
+                        () => {
+                          this.setState({
+                            addVisible:true,
+                            addState: '1'
+                          });
+                        }
+                      }
+                    >
+                      增加成品种类
+                    </Button>
+                    <Button
+                      style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.requiredVisible}}
+                      onClick={
+                        () => {
+                          this.productNext('1')
+                        }
+                      }
+                    >
+                      下一步
+                    </Button>
+                    <Button
+                      style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.requiredVisible}}
+                      onClick={
+                        () => {
+                          window.history.back();
+                        }
+                      }
+                    >
+                      返回
+                    </Button>
+                  </div>
                 }
               >
-                增加成品种类
-              </Button>
-              <Button
-                style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.requiredVisible}}
-                onClick={
-                  () => {
-                    this.productNext('1')
-                  }
+                <Table
+                  rowSelection={productSelection}
+                  columns={this.state.column}
+                  dataSource={this.state.productData}
+                  bordered
+                  pagination={paginationProduct}
+                  scroll={{x: 1000, y: 1000}}
+                  loading={this.state.loadingProduct}
+                  rowKey={"productId"}
+                />
+                <ProductForm
+                  ref={this.saveFormRef}
+                  visible={this.state.addVisible}
+                  onCancel={this.handleProductCancel}
+                  onCreate={this.handleProductCreate}
+                />
+              </Card>
+            </Panel>
+            <Panel panel-primary header="需求" key="2" style={customPanelStyle}>
+              <Card
+                title="需求成品列表"
+                extra={
+                  <div>
+                    <Button
+                      style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.requiredVisible}}
+                      onClick={
+                        () => {
+                          this.setState({
+                            addVisible:true,
+                            addState: '2'
+                          });
+                        }
+                      }
+                    >
+                      增加需求
+                    </Button>
+                    <Button
+                      style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.operationVisible}}
+                      onClick={
+                        () => {
+                          this.confirmProduct()
+                        }
+                      }
+                    >
+                      确定成品
+                    </Button>
+                    <Button
+                      style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.requiredVisible}}
+                      onClick={
+                        () => {
+                          this.productNext('2')
+                        }
+                      }
+                    >
+                      下一步
+                    </Button>
+                    <Button
+                      style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.requiredVisible}}
+                      onClick={
+                        () => {
+                          window.history.back();
+                        }
+                      }
+                    >
+                      返回
+                    </Button>
+                  </div>
                 }
               >
-                下一步
-              </Button>
-              <Button
-                style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.requiredVisible}}
-                onClick={
-                  () => {
-                    window.history.back();
-                  }
-                }
-              >
-                返回
-              </Button>
-            </div>
-          }
-        >
-          <Table
-            rowSelection={productSelection}
-            columns={this.state.column}
-            dataSource={this.state.productData}
-            bordered
-            pagination={paginationProduct}
-            scroll={{x: 1000, y: 1000}}
-            loading={this.state.loadingProduct}
-            rowKey={"productId"}
-          />
-          <ProductForm
-            ref={this.saveFormRef}
-            visible={this.state.addVisible}
-            onCancel={this.handleProductCancel}
-            onCreate={this.handleProductCreate}
-          />
-        </Card>
-      </Panel>
-      <Panel panel-primary header="需求" key="2" style={customPanelStyle}>
-        <Card
-          title="需求成品列表"
-          extra={
-            <div>
-              <Button
-                style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.requiredVisible}}
-                onClick={
-                  () => {
-                    this.setState({
-                      addVisible:true,
-                      addState: '2'
-                    });
-                  }
-                }
-              >
-                增加需求
-              </Button>
-              <Button
-                style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.operationVisible}}
-                onClick={
-                  () => {
-                    this.confirmProduct()
-                  }
-                }
-              >
-                确定成品
-              </Button>
-              <Button
-                style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.requiredVisible}}
-                onClick={
-                  () => {
-                    this.productNext('2')
-                  }
-                }
-              >
-                下一步
-              </Button>
-              <Button
-                style={{width: 120, marginRight: 5, marginLeft: 10, display:this.state.requiredVisible}}
-                onClick={
-                  () => {
-                    window.history.back();
-                  }
-                }
-              >
-                返回
-              </Button>
-            </div>
-          }
-        >
-          <Table
-            rowSelection={requiredSelection}
-            columns={this.state.column}
-            dataSource={this.state.requiredData}
-            bordered
-            pagination={paginationRequired}
-            scroll={{x: 1000, y: 1000}}
-            loading={this.state.loadingRequired}
-            rowKey={"productId"}
-          />
-        </Card>
-      </Panel>
-    </Collapse>
+                <Table
+                  rowSelection={requiredSelection}
+                  columns={this.state.column}
+                  dataSource={this.state.requiredData}
+                  bordered
+                  pagination={paginationRequired}
+                  scroll={{x: 1000, y: 1000}}
+                  loading={this.state.loadingRequired}
+                  rowKey={"productId"}
+                />
+              </Card>
+            </Panel>
+          </Collapse>
+        </div>
+      </Card>
     )
   }
 }
