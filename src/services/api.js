@@ -1,4 +1,4 @@
-import { post, get } from '../utils/request';
+import { post, get, put } from '../utils/request';
 import md5 from 'js-md5';
 
 export async function MonitorGetAll() {
@@ -21,6 +21,19 @@ export async function login(userName,password,role) {
   headers.set("userName", userName);
   headers.set("role",role);
   return post("/api/login",headers);
+}
+
+export async function modifyUserPassword(userId, oldPassword, newPassword) {
+  let headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  headers.append('Accept', 'application/json');
+  headers.set("user_id", userId);
+  headers.set("password_old", md5(oldPassword));
+  headers.set("password_new", md5(newPassword));
+  //console.log(userId);
+  //console.log(oldPassword);
+  //console.log(newPassword);
+  return put("/api/user/modify/password", headers);
 }
 
 export async function getUsers() {

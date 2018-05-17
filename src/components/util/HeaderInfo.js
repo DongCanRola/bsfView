@@ -4,6 +4,7 @@ import screenfull from 'screenfull';
 import {browserHistory} from 'dva/router'
 import md5 from 'js-md5'
 //import {modifyPassword} from "../../services/adminApi";
+import {modifyUserPassword} from '../../services/api';
 
 const MenuItemGroup = Menu.ItemGroup;
 
@@ -32,23 +33,37 @@ var HeaderInfo = React.createClass({
   changePassword: function () {
     console.log("点击修改密码。");
 
-    if (this.state.password == null || this.state.password == '') {
+    if (this.state.password === null || this.state.password === '') {
       message.warning("请输入要修改的密码！", 2);
       return;
     }
 
-    if (this.state.passwordConfirm != this.state.password) {
+    if (this.state.passwordConfirm !== this.state.password) {
       message.warning("密码不一致，请重新输入！", 2);
       return;
     }
 
+    modifyUserPassword(window.sessionStorage.getItem("userId"), this.state.oldPassword, this.state.password).then(resp => {
+      console.log("modify password result: ", resp.data.entity);
+      if(resp.data.entity.result === 'ok') {
+        message.success("密码修改成功，请重新登录！", 3);
+        this.setState({modifyPassword: false});
+        this.logout();
+      } else {
+        message.warning("原有密码输入错误！", 2);
+      }
+    }).catch(() => {
+      message.warning("修改失败！", 2);
+    })
 
-    if (md5(this.state.oldPassword) != window.sessionStorage.getItem("password")) {
-      console.log("y原密码加密后：",md5(this.state.oldPassword));
-      console.log("原来的md5密码：",window.sessionStorage.getItem("password"))
-      message.warning("原密码不对，请确认您拥有权限！", 2);
-      return;
-    }
+    /*
+     if (md5(this.state.oldPassword) !== window.sessionStorage.getItem("password")) {
+     console.log("y原密码加密后：",md5(this.state.oldPassword));
+     console.log("原来的md5密码：",window.sessionStorage.getItem("password"));
+     message.warning("原密码不对，请确认您拥有权限！", 2);
+     return;
+     }
+     */
 
     /*
      modifyPassword(this.state.userId, this.state.password).then(resp => {
