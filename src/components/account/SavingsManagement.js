@@ -72,7 +72,10 @@ export default class SavingsManagement extends React.Component {
           dataIndex: "savings_balance",
           width: "33%"
         }
-      ]
+      ],
+
+      //销售收款
+      gatherChoose: window.sessionStorage.getItem("gather_id") !== null ? 'inline':'none'
     };
     this.setData();
   }
@@ -144,6 +147,16 @@ export default class SavingsManagement extends React.Component {
     }
   }
 
+  chooseGatherSavings() {
+    let savings = this.state.selectedRows;
+    if(savings.length !== 1) {
+      message.warning("请选择一个账户！", 2);
+    } else {
+      window.sessionStorage.setItem("gather_savings", savings[0].savings_id);
+      browserHistory.push({pathname: '/saleGatherManagement'});
+    }
+  }
+
   render() {
 
     const paginationSavings = {
@@ -192,7 +205,30 @@ export default class SavingsManagement extends React.Component {
                   style={{width: 120, marginRight: 5, marginLeft: 10, display: this.state.payChoose}}
                   onClick={
                     () => {
-                      //this.setState({addVisible:true});
+                      window.sessionStorage.removeItem("pay_id");
+                      window.sessionStorage.removeItem("pay_savings");
+                      window.sessionStorage.removeItem("pay_usable");
+                    }
+                  }
+                >
+                  返回
+                </Button>
+                <Button
+                  style={{width: 120, marginRight: 5, marginLeft: 10, display: this.state.gatherChoose}}
+                  onClick={
+                    () => {
+                      this.chooseGatherSavings();
+                    }
+                  }
+                >
+                  收款
+                </Button>
+                <Button
+                  style={{width: 120, marginRight: 5, marginLeft: 10, display: this.state.gatherChoose}}
+                  onClick={
+                    () => {
+                      window.sessionStorage.removeItem("gather_id");
+                      window.sessionStorage.removeItem("gather_savings");
                     }
                   }
                 >

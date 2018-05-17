@@ -41,6 +41,13 @@ const ConfirmForm = Form.create() (
               <Input/>
             )}
           </FormItem>
+          <FormItem label="折扣">
+            {getFieldDecorator('newOrderDiscount',{
+              rules: [{ required:true, message: '请输入折扣！'}],
+            })(
+              <Input/>
+            )}
+          </FormItem>
         </Form>
       </Modal>
     )
@@ -160,6 +167,7 @@ export default class SampleOrderManagement extends React.Component {
         sale_orderId: this.state.orderToConfirm,
         sale_num: values.newOrderNum,
         sale_price: values.newOrderPrice,
+        sale_discount: values.newOrderDiscount,
         sale_state: '4'
       };
       confirmOrder(obj).then(resp => {

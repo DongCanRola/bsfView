@@ -49,3 +49,31 @@ export async function addPurchasePayDetail(obj) {
   };
   return post("/api/purchase/pay/detail/add", headers, body);
 }
+
+export async function getSaleGatherList() {
+  let headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  headers.append('Accept', 'application/json');
+  return ("/api/sale/gather/list", headers);
+}
+
+export async function getSaleGatherDetailList(gatherId) {
+  let headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  headers.append('Accept', 'application/json');
+  headers.set("sale_gatherId", gatherId);
+  return get("/api/sale/gather/detail/gatherList", headers);
+}
+
+export async function addSaleGatherDetail(obj) {
+  let headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  headers.append('Accept', 'application/json');
+  let body = {
+    detail_gather: obj.detail_gather,
+    detail_money: obj.detail_money,
+    detail_user: obj.detail_user,
+    detail_savings: obj.detail_savings
+  };
+  return post("/api/sale/gather/detail/add", headers, body);
+}

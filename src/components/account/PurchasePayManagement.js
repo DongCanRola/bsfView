@@ -117,6 +117,8 @@ export default class PurchasePayManagement extends React.Component {
           payVisible: false
         });
         this.setData();
+      } else {
+        message.success("请检查付款金额！", 2);
       }
     }).catch(() => {
       message.warning("添加付款失败！", 2);

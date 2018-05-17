@@ -42,7 +42,8 @@ export async function confirmOrder(obj) {
     sale_orderId: obj.sale_orderId,
     sale_num: obj.sale_num,
     sale_price: obj.sale_price,
-    sale_state: obj.sale_state
+    sale_state: obj.sale_state,
+    sale_discount: obj.sale_discount
   };
   return put("/api/sale/order/update", headers, body);
 }

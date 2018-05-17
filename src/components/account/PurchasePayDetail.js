@@ -34,7 +34,7 @@ export default class PurchasePayDetail extends React.Component {
           dataIndex: "pay_savings",
           width: "15%"
         },{
-          title: "付款人ID",
+          title: "付款人",
           dataIndex: "pay_user",
           width: "15%"
         }
