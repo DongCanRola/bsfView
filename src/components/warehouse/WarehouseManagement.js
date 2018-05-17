@@ -74,7 +74,9 @@ export default class WarehouseManagement extends React.Component {
           dataIndex: "warehouse_spare",
           width: "25%"
         }
-      ]
+      ],
+      //成品存储操作可见
+      saleStoreVisible: window.sessionStorage.getItem("sale_store_order_id") !== null ? 'inline':'none'
     };
     this.setData();
   }
@@ -159,6 +161,17 @@ export default class WarehouseManagement extends React.Component {
     }
   }
 
+  saleStoreConfirm() {
+    let items = this.state.selectedRows;
+    if(items.length !== 1) {
+      message.warning("请选择一个仓库进行存储！", 2);
+    } else {
+      window.sessionStorage.setItem("sale_store_warehouse", items[0].warehouse_id);
+      window.sessionStorage.setItem("sale_warehouse_spare", items[0].warehouse_spare);
+      browserHistory.push({pathname: '/productStoreManagement'});
+    }
+  }
+
   render() {
 
     const paginationWarehouse = {
@@ -209,6 +222,16 @@ export default class WarehouseManagement extends React.Component {
               onClick={
                 () => {
                   this.purchaseStoreConfirm()
+                }
+              }
+            >
+              确定
+            </Button>
+            <Button
+              style={{width: 120, marginRight: 5, marginLeft: 10, display: this.state.saleStoreVisible}}
+              onClick={
+                () => {
+                  this.saleStoreConfirm()
                 }
               }
             >

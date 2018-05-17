@@ -167,3 +167,97 @@ const processMaterialFetchList = [
 export function processMaterialFetchColumn() {
   return processMaterialFetchList;
 }
+
+const saleOrderList = [
+  {
+    title: "编号",
+    dataIndex: "sale_orderId",
+    width: "15%"
+  },{
+    title: "成品",
+    dataIndex: "sale_productId",
+    width: "15%"
+  },{
+    title: "销售总量",
+    dataIndex: "sale_num",
+    width: "15%"
+  },{
+    title: "未入库数量",
+    dataIndex: "store_remaining",
+    width: "15%"
+  },{
+    title: "订单时间",
+    dataIndex: "sale_orderTime",
+    width: "20%"
+  },{
+    title: "销售员",
+    dataIndex: "sale_user",
+    width: "15%"
+  }
+];
+export function saleOrderColumn() {
+  return saleOrderList;
+}
+
+const productStoreList = [
+  {
+    title: "编号",
+    dataIndex: "store_id",
+    width: "13%"
+  },{
+    title: "销售单",
+    dataIndex: "store_saleId",
+    width: "13%"
+  },{
+    title: "仓库",
+    dataIndex: "store_warehouseId",
+    width: "13%"
+  },{
+    title: "存入数量",
+    dataIndex: "store_num",
+    width: "13%"
+  },{
+    title: "存储剩余",
+    dataIndex: "store_remaining",
+    width: "13%"
+  },{
+    title: "存入时间",
+    dataIndex: "store_time",
+    width: "18%"
+  },{
+    title: "存入用户",
+    dataIndex: "store_user",
+    width: "13%"
+  }
+];
+export function productStoreColumn() {
+  return productStoreList;
+}
+
+const productSendList = [
+  {
+    title: "",
+    dataIndex: "send_id",
+    width: "18%"
+  },{
+    title: "",
+    dataIndex: "send_storeId",
+    width: "18%"
+  },{
+    title: "",
+    dataIndex: "send_num",
+    width: "18%"
+  },{
+    title: "",
+    dataIndex: "send_time",
+    width: "25%"
+  },{
+    title: "",
+    dataIndex: "send_user",
+    width: "18%"
+  }
+];
+
+export function productSendColumn() {
+  return productSendList;
+}

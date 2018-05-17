@@ -95,3 +95,45 @@ export async function getMaterialUseListByProcessOrder(listId) {
   headers.set("processOrderId", listId);
   return get("/api/warehouse/process/materialUse/processOrderList", headers);
 }
+
+export async function storeProduct(obj) {
+  let headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  headers.append('Accept', 'application/json');
+  let body = {
+    store_saleId: obj.store_saleId,
+    store_warehouseId: obj.store_warehouseId,
+    store_num: obj.store_num,
+    store_remaining: obj.store_remaining,
+    store_user: obj.store_user
+  };
+  return post("/api/warehouse/product/store", headers, body);
+}
+
+export async function sendProduct(obj) {
+  let headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  headers.append('Accept', 'application/json');
+  let body = {
+    send_storeId: obj.send_storeId,
+    send_num: obj.send_num,
+    send_user: obj.send_user
+  };
+  return post("/api/warehouse/product/send", headers, body);
+}
+
+export async function getProductStoreBySale(saleId) {
+  let headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  headers.append('Accept', 'application/json');
+  headers.set("sale_id", saleId);
+  return get("/api/warehouse/product/storeListSale", headers);
+}
+
+export async function getProductSendBySale(saleId) {
+  let headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  headers.append('Accept', 'application/json');
+  headers.set("sale_id", saleId);
+  return get("/api/warehouse/product/sendListSale", headers);
+}
