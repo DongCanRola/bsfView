@@ -199,6 +199,33 @@ export function saleOrderColumn() {
   return saleOrderList;
 }
 
+const saleOrderSendList = [
+  {
+    title: "编号",
+    dataIndex: "sale_orderId",
+    width: "18%"
+  },{
+    title: "成品",
+    dataIndex: "sale_productId",
+    width: "18%"
+  },{
+    title: "销售总量",
+    dataIndex: "sale_num",
+    width: "18%"
+  },{
+    title: "订单时间",
+    dataIndex: "sale_orderTime",
+    width: "25%"
+  },{
+    title: "销售员",
+    dataIndex: "sale_user",
+    width: "18%"
+  }
+];
+export function saleOrderSendColumn() {
+  return saleOrderSendList;
+}
+
 const productStoreList = [
   {
     title: "编号",

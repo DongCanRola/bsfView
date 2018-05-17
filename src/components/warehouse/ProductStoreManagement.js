@@ -157,6 +157,16 @@ export default class ProductStoreManagement extends React.Component {
             >
               入库
             </Button>
+            <Button
+              style={{width: 120, marginRight: 5, marginLeft: 10}}
+              onClick={
+                () => {
+                  this.lookProductStoreDetail()
+                }
+              }
+            >
+              查看入库
+            </Button>
           </div>
         }
       >
