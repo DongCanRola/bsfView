@@ -15,7 +15,8 @@ export default class MaterialFetchDetail extends React.Component {
       listData: [],
       loadingData: true,
       listColumn: processMaterialFetchColumn()
-    }
+    };
+    this.setData();
   }
 
   setData() {
@@ -34,7 +35,7 @@ export default class MaterialFetchDetail extends React.Component {
       }
       this.setState({
         listData: v,
-        loadingList: false
+        loadingData: false
       });
     }).catch(() => {
       message.warning("获取数据失败!", 2);

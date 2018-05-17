@@ -2,7 +2,7 @@
  * Created by dongc_000 on 2018/5/15.
  */
 import React from 'react';
-import {Card, Table, Modal, Button, message} from 'antd';
+import {Card, Table, Modal, Button, message, Collapse} from 'antd';
 
 import {processColumn} from './produceTable';
 import {getProcessByState, getConcreteSample, updateStateOfProcess} from '../../services/produceApi';

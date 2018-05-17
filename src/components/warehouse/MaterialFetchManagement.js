@@ -96,7 +96,7 @@ export default class MaterialFetchManagement extends React.Component {
       message.warning("请选择一个待调度材料单！", 2);
     } else {
       window.sessionStorage.setItem("materialList_fetch_id", items[0].list_id);
-      window.sessionStorage.setItem("materialList_fetch_goods", items[0].list_goods);
+      window.sessionStorage.setItem("look_material_purchaseStore", items[0].list_goods);
       window.sessionStorage.setItem("materialList_fetch_remaining", items[0].list_remaining);
       browserHistory.push({pathname: '/materialStoreDetail'});
     }

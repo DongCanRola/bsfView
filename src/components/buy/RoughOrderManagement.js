@@ -177,7 +177,7 @@ export default class RoughOrderManagement extends React.Component {
         confirmOrder(obj).then(resp => {
           console.log(resp.data.entity);
           if(resp.data.entity.result === 'ok') {
-            message.success("订单" + order + "已确认", 2);
+            message.success("订单" + order.purchaseOrder_id + "已确认", 2);
             this.setData();
             this.setState({discountVisible: false});
           }

@@ -74,7 +74,7 @@ export default class SavedOrderManagement extends React.Component {
         extra={
           <div>
             <Button
-              style={{width: 120, marginRight: 5, marginLeft: 10}}
+              style={{width: 120, marginRight: 5, marginLeft: 10, display: 'none'}}
               onClick={
                 () => {
                   //this.setState({customerVisible:true});

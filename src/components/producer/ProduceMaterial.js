@@ -106,7 +106,8 @@ export default class ProduceMaterial extends React.Component {
       items = this.state.selectedDoneRows;
     getConcreteSample(items[0].sample_id).then(resp => {
       console.log("get some sample: ", resp.data.entity);
-      let currentSample = resp.data.entity[0];
+      let currentSample = resp.data.entity;
+      console.log("the sample: ", currentSample);
       Modal.info({
         title: '样本'+currentSample.sample_id,
         content: (
@@ -312,7 +313,7 @@ export default class ProduceMaterial extends React.Component {
                 />
               </Card>
             </Panel>
-            <Panel header="材料准备完成" key="2" style={customPanelStyle}>
+            <Panel header="材料准备完成" key="3" style={customPanelStyle}>
               <Card
                 title="加工条目列表"
                 extra={

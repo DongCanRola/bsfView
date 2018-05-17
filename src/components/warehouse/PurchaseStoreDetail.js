@@ -20,7 +20,9 @@ export default class PurchaseStoreDetail extends React.Component {
   }
 
   setData() {
-    getPurchaseStoreListByPurchase(window.sessionStorage.getItem("look_purchaseStore")).then(resp => {
+    let purchaseId = window.sessionStorage.getItem("look_purchaseStore");
+    console.log("get store detail: ", purchaseId);
+    getPurchaseStoreListByPurchase(purchaseId).then(resp => {
       console.log("purchase store detail list: ", resp.data.entity);
       let v = [];
       for(let item of resp.data.entity) {
@@ -48,7 +50,7 @@ export default class PurchaseStoreDetail extends React.Component {
   render() {
 
     const pagination = {
-      total: this.state.roughData.length,
+      total: this.state.storeData.length,
       showSizeChanger: true,
       onShowSizeChange(current, pageSize) {
         console.log('Current: ', current, '; PageSize: ', pageSize)

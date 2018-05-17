@@ -238,7 +238,7 @@ export default class PurchaseStoreManagement extends React.Component {
               onCancel={() => {this.handleStoreCancel()}}
             >
               <p>{"订单"+window.sessionStorage.getItem("purchase_store_order_id")+"有"+window.sessionStorage.getItem("purchase_wait_store")+"待存储"}</p>
-              <Input id="numToStore" onChange={value => this.getName(value.target.value)}/>
+              <Input id="numToStore" onChange={value => this.getStoreNum(value.target.value)}/>
             </Modal>
           </Card>
         </Panel>

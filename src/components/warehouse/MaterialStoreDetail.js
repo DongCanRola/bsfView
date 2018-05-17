@@ -118,8 +118,10 @@ export default class MaterialStoreDetail extends React.Component {
     });
   }
   handleFetchSubmit = () => {
-    if(this.state.fetchNum > window.sessionStorage.getItem("materialList_fetch_remaining" ||
-      this.state.fetchNum > this.state.selectedRows[0].purchase_storeRemaining)) {
+    if(this.state.fetchNum > window.sessionStorage.getItem("materialList_fetch_remaining") ||
+      this.state.fetchNum > this.state.selectedRows[0].purchase_storeRemaining) {
+      console.log(window.sessionStorage.getItem("materialList_fetch_remaining"));
+      console.log(this.state.selectedRows[0].purchase_storeRemaining);
       message.warning("调度数量过多！", 2);
     } else {
       let obj = {
@@ -138,7 +140,7 @@ export default class MaterialStoreDetail extends React.Component {
           window.sessionStorage.removeItem("materialList_fetch_remaining");
           browserHistory.push({pathname: '/materialFetchManagement'});
         } else {
-          message.warning("加工材料调度失败！", 2);
+          message.warning("加工材料调度失败，请检查数量！", 2);
         }
       }).catch(() => {
         message.warning("加工材料调度失败！", 2);

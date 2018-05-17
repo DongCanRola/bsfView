@@ -87,12 +87,11 @@ export default class MaterialManagement extends React.Component {
           title: "类型",
           render:(record) => {
             let show = "原材料";
-            if(record.goodsType === "2")
+            if(record.goodsType === 2)
               show = "加工材料";
             return(<span>{show}</span>);
           },
-          width: "33%",
-          dataIndex: "goodsType"
+          width: "33%"
         },{
           title: "名称",
           width: "33%",
@@ -269,7 +268,10 @@ export default class MaterialManagement extends React.Component {
         if(resp.data.entity.result === 'ok') {
           message.success("增加样本成功，请记录打样消耗！", 5);
           window.sessionStorage.setItem("sample_new_id", resp.data.entity.message);
-          this.setState({sampleUseVisible: 'inline'});
+          this.setState({
+            sampleUseVisible: 'inline',
+            newSampleVisible: false
+          });
         } else {
           message.warning("增加样本失败！", 2);
         }
@@ -325,6 +327,7 @@ export default class MaterialManagement extends React.Component {
       list_total: this.state.processMaterialNum,
       list_state: '3'
     };
+    console.log("process message:", obj);
     addProcessMaterialList(obj).then(resp => {
       console.log("add process material list result: ", resp.data.entity);
       if(resp.data.entity.result === 'ok') {

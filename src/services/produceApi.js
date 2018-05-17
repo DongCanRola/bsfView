@@ -97,6 +97,7 @@ export async function addProcessMaterialList(obj) {
     list_total: obj.list_total,
     list_state: obj.list_state
   };
+  console.log("body",body);
   return post("/api/process/process/material/add", headers, body);
 }
 
