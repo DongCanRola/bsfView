@@ -17,7 +17,8 @@ export default class SaleGatherManagement extends React.Component {
         {
           title: "编号",
           dataIndex: "gather_id",
-          width: "10%"
+          width: "10%",
+          sorter: (a, b) => a.gather_id - b.gather_id
         },{
           title: "销售单",
           dataIndex: "gather_saleId",
@@ -41,11 +42,30 @@ export default class SaleGatherManagement extends React.Component {
         },{
           title: "待收",
           dataIndex: "gather_surplus",
-          width: "10%"
+          width: "10%",
+          filters: [ {
+            text: '已收',
+            value: ['00']
+          }, {
+            text: '待收',
+            value: ['19']
+          }],
+          onFilter: (value, record) => {
+            //console.log("value: ", value);
+            //console.log("value0: ", value[0]);
+            //console.log("value1: ", value[1]);
+            //console.log("compare: ", record.gather_surplus.toString() >= value[0]);
+            return record.gather_surplus.toString() >= value[0] && record.gather_surplus.toString() <= value[1]
+          },
+          sorter: (a, b) => a.gather_surplus - b.gather_surplus
         },{
           title: "订单时间",
           dataIndex: "gather_saleTime",
-          width: "25%"
+          width: "25%",
+          sorter: (a, b) => {
+            //console.log(typeof(a.gather_saleTime));
+            return a.gather_saleTime >= b.gather_saleTime
+          }
         }
       ],
       loadingData: true,

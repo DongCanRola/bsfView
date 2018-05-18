@@ -59,6 +59,8 @@ import SaleGatherManagement from './components/account/SaleGatherManagement';
 import SaleGatherDetail from './components/account/SaleGatherDetail';
 import SaleReturnManagement from './components/account/SaleReturnManagement';
 import SaleReturnDetail from './components/account/SaleReturnDetail';
+import SavingsPayDetail from './components/account/SavingsPayDetail';
+import SavingsGatherDetail from './components/account/SavingsGatherDetail';
 
 import SavingsManagement from './components/account/SavingsManagement';
 
@@ -148,6 +150,8 @@ function RouterConfig({ history }) {
         <Route path="/saleGatherDetail" component={SaleGatherDetail}/>
         <Route path="/saleReturn" component={SaleReturnManagement}/>
         <Route path="/saleReturnDetail" component={SaleReturnDetail}/>
+        <Route path="/savingsPayDetail" component={SavingsPayDetail}/>
+        <Route path="/savingsGatherDetail" component={SavingsGatherDetail}/>
       </Route>
 
       <Route path='/404' component={NotFoundPage} />

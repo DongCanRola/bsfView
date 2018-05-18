@@ -157,6 +157,26 @@ export default class SavingsManagement extends React.Component {
     }
   }
 
+  lookPayDetail() {
+    let savings = this.state.selectedRowKeys;
+    if(savings.length !== 1) {
+      message.warning("请选择一个账户！", 2);
+    } else {
+      window.sessionStorage.setItem("savings_look_detail_pay_id", savings[0]);
+      browserHistory.push({pathname: '/savingsPayDetail'});
+    }
+  }
+
+  lookGatherDetail() {
+    let savings = this.state.selectedRowKeys;
+    if(savings.length !== 1) {
+      message.warning("请选择一个账户！", 2);
+    } else {
+      window.sessionStorage.setItem("savings_look_detail_gather_id", savings[0]);
+      browserHistory.push({pathname: '/savingsGatherDetail'});
+    }
+  }
+
   render() {
 
     const paginationSavings = {
@@ -182,7 +202,7 @@ export default class SavingsManagement extends React.Component {
             extra={
               <div>
                 <Button
-                  style={{width: 120, marginRight: 5, marginLeft: 10, display: this.state.savingsManagement}}
+                  style={{width: 120, marginRight: 5, marginLeft: 10, display: 'inline'}}
                   onClick={
                     () => {
                       this.setState({addVisible:true});
@@ -190,6 +210,26 @@ export default class SavingsManagement extends React.Component {
                   }
                 >
                   添加账户
+                </Button>
+                <Button
+                  style={{width: 120, marginRight: 5, marginLeft: 10, display: 'inline'}}
+                  onClick={
+                    () => {
+                      this.lookPayDetail();
+                    }
+                  }
+                >
+                  查看付款详情
+                </Button>
+                <Button
+                  style={{width: 120, marginRight: 5, marginLeft: 10, display: 'inline'}}
+                  onClick={
+                    () => {
+                      this.lookGatherDetail();
+                    }
+                  }
+                >
+                  查看收款详情
                 </Button>
                 <Button
                   style={{width: 120, marginRight: 5, marginLeft: 10, display: this.state.payChoose}}

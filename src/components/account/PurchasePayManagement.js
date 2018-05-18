@@ -16,7 +16,8 @@ export default class PurchasePayManagement extends React.Component {
         {
           title: "编号",
           dataIndex: "purchasePay_id",
-          width: "10%"
+          width: "10%",
+          sorter: (a, b) => a.purchasePay_id - b.purchasePay_id
         },{
           title: "进货订单",
           dataIndex: "purchase_id",
@@ -40,11 +41,23 @@ export default class PurchasePayManagement extends React.Component {
         },{
           title: "剩余应付",
           dataIndex: "surplus",
-          width: "10%"
+          width: "10%",
+          filters: [{
+            text: '已付清',
+            value: ['00']
+          },{
+            text: '待付清',
+            value: ['19']
+          }],
+          onFilter: (value, record) => {
+            return record.surplus.toString() >= value[0] && record.surplus.toString() <= value[1]
+          },
+          sorter: (a, b) => a.surplus - b.surplus
         },{
           title: "订单时间",
           dataIndex: "order_time",
-          width: "25%"
+          width: "25%",
+          sorter: (a, b) => a.order_time >= b.order_time
         }
       ],
       purchasePayData: [],

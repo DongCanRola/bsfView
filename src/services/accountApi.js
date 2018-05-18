@@ -77,3 +77,19 @@ export async function addSaleGatherDetail(obj) {
   };
   return post("/api/sale/gather/detail/add", headers, body);
 }
+
+export async function getSavingsPayDetailList(savingsId) {
+  let headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  headers.append('Accept', 'application/json');
+  headers.set("savings_id", savingsId);
+  return get("/api/purchase/pay/detail/savingsList", headers);
+}
+
+export async function getSavingsGatherDetailList(savingsId) {
+  let headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  headers.append('Accept', 'application/json');
+  headers.set("savings_id", savingsId);
+  return get("/api/sale/gather/detail/savingsList", headers);
+}
