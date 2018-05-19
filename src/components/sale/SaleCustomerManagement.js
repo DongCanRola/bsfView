@@ -5,7 +5,7 @@ import React from 'react';
 import {Card, Button, Table, Form, Modal, Input, Select, message, Collapse} from 'antd';
 import { Router, Route,IndexRoute,hashHistory,browserHistory } from 'dva/router';
 import {customerColumn} from './saleTable';
-import {getCustomer, addCustomer} from '../../services/customerApi';
+import {getCustomer, addCustomer, updateCustomer} from '../../services/customerApi';
 
 const Panel = Collapse.Panel;
 const customPanelStyle = {
@@ -55,6 +55,59 @@ const CustomerForm = Form.create() (
           <FormItem label="地址">
             {getFieldDecorator('newCustomerAddress',{
               rules: [{required:true, message: "请输入客户地址！"}],
+            })(
+              <Input/>
+            )}
+          </FormItem>
+        </Form>
+      </Modal>
+    )
+  }
+);
+
+const CustomerUpdateForm = Form.create() (
+  (props) => {
+    const { visible, onCancel, onCreate, form } = props;
+    const { getFieldDecorator } = form;
+    return (
+      <Modal
+        visible={visible}
+        title="更新客户信息"
+        onCancel={onCancel}
+        onOk={onCreate}
+      >
+        <Form layout="vertical">
+          <FormItem label="名称">
+            {getFieldDecorator('updateCustomerName',{
+              initialValue: window.sessionStorage.getItem("customer_before_name"),
+            })(
+              <Input/>
+            )}
+          </FormItem>
+          <FormItem label="负责人">
+            {getFieldDecorator('updateCustomerManager',{
+              initialValue: window.sessionStorage.getItem("customer_before_manager"),
+            })(
+              <Input/>
+            )}
+          </FormItem>
+          <FormItem label="电话">
+            {getFieldDecorator('updateCustomerPhone', {
+              initialValue: window.sessionStorage.getItem("customer_before_telephone"),
+            })(
+              <Input/>
+            )}
+          </FormItem>
+          <FormItem label="邮箱">
+            {getFieldDecorator('updateCustomerEmail', {
+              initialValue: window.sessionStorage.getItem("customer_before_email"),
+            })(
+              <Input/>
+            )}
+          </FormItem>
+          <FormItem label="地址">
+            {getFieldDecorator('updateCustomerAddress',{
+              initialValue: window.sessionStorage.getItem("customer_before_address"),
             })(
               <Input/>
             )}
@@ -121,6 +174,7 @@ export default class SaleCustomerManagement extends React.Component {
       customerData: [],
       agentData: [],
       selectedCustomerRowKeys: [],
+      selectedCustomerRows: [],
       selectedAgentRowKeys: [],
       column: customerColumn(),
       chooseCustomer: window.sessionStorage.getItem("order_product") !== null ? 'inline':'none',
@@ -128,7 +182,9 @@ export default class SaleCustomerManagement extends React.Component {
       customerVisible: false,
       agentVisible: false,
       loadCustomer: true,
-      loadAgent: true
+      loadAgent: true,
+
+      updateCustomerVisible: false
     };
     this.setData("2");
     this.setData("3");
@@ -165,9 +221,10 @@ export default class SaleCustomerManagement extends React.Component {
     }).catch();
   }
 
-  onSelectChangeCustomer(selectedCustomerRowKeys) {
+  onSelectChangeCustomer(selectedCustomerRowKeys, selectedCustomerRows) {
     console.log("selectedCustomerRowKeys changed: ", selectedCustomerRowKeys);
-    this.setState({selectedCustomerRowKeys});
+    console.log("selectedCustomerRows changed: ", selectedCustomerRows);
+    this.setState({selectedCustomerRowKeys, selectedCustomerRows});
   }
 
   onSelectChangeAgent(selectedAgentRowKeys) {
@@ -252,6 +309,67 @@ export default class SaleCustomerManagement extends React.Component {
     }
   }
 
+  updateCustomerSale() {
+    let customer = this.state.selectedCustomerRows;
+    if(customer.length !== 1) {
+      message.warning("请选择一个用户！", 2);
+    } else {
+      window.sessionStorage.setItem("customer_before_name", customer[0].customerName);
+      window.sessionStorage.setItem("customer_before_manager", customer[0].customerManager);
+      window.sessionStorage.setItem("customer_before_telephone", customer[0].customerTelephone);
+      window.sessionStorage.setItem("customer_before_email", customer[0].customerEmail);
+      window.sessionStorage.setItem("customer_before_address", customer[0].customerAddress);
+      this.setState({updateCustomerVisible: true});
+    }
+  }
+
+  saveCustomerUpdateFormRef = (form) =>{
+    this.formCustomerUpdate = form;
+  };
+  handleCustomerUpdateCancel = () => {
+    this.setState({updateCustomerVisible: false});
+    window.sessionStorage.removeItem("customer_before_name");
+    window.sessionStorage.removeItem("customer_before_manager");
+    window.sessionStorage.removeItem("customer_before_telephone");
+    window.sessionStorage.removeItem("customer_before_email");
+    window.sessionStorage.removeItem("customer_before_address");
+  };
+  handleCustomerUpdateCreate = () => {
+    const form = this.formCustomerUpdate;
+    form.validateFields((err, values) => {
+      if(err) {
+        return;
+      }
+      let obj = {
+        id: this.state.selectedCustomerRows[0].customerId,
+        name: values.updateCustomerName,
+        type: "2",
+        manager: values.updateCustomerManager,
+        telephone: values.updateCustomerPhone,
+        email: values.updateCustomerEmail,
+        address: values.updateCustomerAddress
+      };
+      console.log("update customer: ", obj);
+      updateCustomer(obj).then(resp => {
+        console.log("update sale customer result: ", resp.data.entity);
+        if(resp.data.entity.result === 'ok') {
+          message.success("成功更新客户信息！", 2);
+          this.setState({updateCustomerVisible: false});
+          window.sessionStorage.removeItem("customer_before_name");
+          window.sessionStorage.removeItem("customer_before_manager");
+          window.sessionStorage.removeItem("customer_before_telephone");
+          window.sessionStorage.removeItem("customer_before_email");
+          window.sessionStorage.removeItem("customer_before_address");
+          this.setData('2');
+        } else {
+          message.warning("更新客户信息失败!", 2);
+        }
+      }).catch(() => {
+        message.warning("更新客户信息失败！", 2);
+      });
+    })
+  };
+
   render() {
 
     const paginationCustomer = {
@@ -303,6 +421,16 @@ export default class SaleCustomerManagement extends React.Component {
                   添加客户
                 </Button>
                 <Button
+                  style={{width: 120, marginRight: 5, marginLeft: 10}}
+                  onClick={
+                    () => {
+                      this.updateCustomerSale();
+                    }
+                  }
+                >
+                  修改信息
+                </Button>
+                <Button
                   style={{width: 120, marginRight: 5, marginLeft: 10, display: this.state.chooseCustomer}}
                   onClick={
                     () => {
@@ -340,6 +468,12 @@ export default class SaleCustomerManagement extends React.Component {
           visible={this.state.customerVisible}
           onCancel={this.handleCustomerCancel}
           onCreate={this.handleCustomerCreate}
+        />
+        <CustomerUpdateForm
+          ref={this.saveCustomerUpdateFormRef}
+          visible={this.state.updateCustomerVisible}
+          onCancel={this.handleCustomerUpdateCancel}
+          onCreate={this.handleCustomerUpdateCreate}
         />
       </Card>
     )

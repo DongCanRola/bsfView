@@ -34,3 +34,20 @@ export async function addCustomer(obj) {
   };
   return post("/api/customer/add", headers, body);
 }
+
+export async function updateCustomer(obj) {
+  let headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  headers.append('Accept', 'application/json');
+  let body = {
+    id: obj.id,
+    type: obj.type,
+    provideType: obj.provideType,
+    name: obj.name,
+    manager: obj.manager,
+    telephone: obj.telephone,
+    email: obj.email,
+    address: obj.address
+  };
+  return put("/api/customer/update", headers, body);
+}
