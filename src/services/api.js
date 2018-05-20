@@ -71,8 +71,7 @@ export function updateUserMessage(obj) {
     "phone": obj.phone,
     "qqnumber": obj.qqnumber,
     "wechat": obj.wechat,
-    "email": obj.email,
-    "user_roles": obj.user_roles
+    "email": obj.email
   }
 }
 

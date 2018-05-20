@@ -99,20 +99,6 @@ const UpdateUserForm = Form.create() (
               initialValue: window.sessionStorage.getItem("user_before_email"),
             })(<Input/>)}
           </FormItem>
-          <FormItem label="初始职务">
-            {getFieldDecorator('updatePosition',{
-              initialValue: window.sessionStorage.getItem("user_before_position"),
-            })(
-              <Select>
-                <Option value="2">管理员</Option>
-                <Option value="3">销售</Option>
-                <Option value="4">进货</Option>
-                <Option value="5">库管</Option>
-                <Option value="6">生产加工</Option>
-                <Option value="7">财务</Option>
-              </Select>
-            )}
-          </FormItem>
         </Form>
       </Modal>
     )
@@ -213,7 +199,6 @@ export default class UserManagement extends React.Component {
       window.sessionStorage.setItem("user_before_qq", users[0].qq_number);
       window.sessionStorage.setItem("user_before_wechat", users[0].wechat);
       window.sessionStorage.setItem("user_before_email", users[0].email);
-      window.sessionStorage.setItem("user_before_position", users[0].roles);
       this.updateForm.resetFields();
       this.setState({updateMessageVisible: true});
     }
@@ -227,7 +212,6 @@ export default class UserManagement extends React.Component {
     window.sessionStorage.removeItem("user_before_qq");
     window.sessionStorage.removeItem("user_before_wechat");
     window.sessionStorage.removeItem("user_before_email");
-    window.sessionStorage.removeItem("user_before_position");
   };
   handleUpdateCreate = () => {
     const form = this.updateForm;
@@ -254,7 +238,6 @@ export default class UserManagement extends React.Component {
           window.sessionStorage.removeItem("user_before_qq");
           window.sessionStorage.removeItem("user_before_wechat");
           window.sessionStorage.removeItem("user_before_email");
-          window.sessionStorage.removeItem("user_before_position");
         } else {
           message.warning("更新用户信息失败！", 2);
         }
