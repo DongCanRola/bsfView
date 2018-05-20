@@ -61,18 +61,19 @@ export async function addUser(obj) {
   return post("/api/user/add",headers,body);
 }
 
-function addEmployee(){
-  var headers = new Headers();
-  headers.append("Content-Type","application/json");
+export function updateUserMessage(obj) {
+  let headers = new Headers();
+  headers.append('Content-Type', "application/json");
   headers.append('Accept', 'application/json');
-  var body={
-    "department": "技术部",
-    "employee_name": "post使用body添加",
-    "position": "技术主管",
-    "employee_id": 15,
-    "password":"1234232356"
+  let body = {
+    "user_id": obj.user_id,
+    "user_name": obj.user_name,
+    "phone": obj.phone,
+    "qqnumber": obj.qqnumber,
+    "wechat": obj.wechat,
+    "email": obj.email,
+    "user_roles": obj.user_roles
   }
-  return post("/api/employee/add",headers,body);
 }
 
 function getTest() {
@@ -82,21 +83,6 @@ function getTest() {
   return get("/api/employee/list",headers);
 }
 
-function getProduceApplicationList(key){
-  alert("test");
-  let url='';
-  var headers = new Headers();
-  headers.append('Content-Type',"application/json");
-  headers.append('Accept', 'application/json');
-  headers.set('status',3);
 
-  if(key==null||key==''){
-    return get("/api/technicalchief/getproduceapplicationlist",headers);
-  }else{
-    headers.set("keyword",key);
-    return get("/api/technicalchief/getproduceapplicationlist/search",headers);
-  }
-
-}
 
 

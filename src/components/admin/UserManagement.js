@@ -5,7 +5,7 @@ import React from 'react';
 import {Card, Button, Table, Form, Modal, Input, Select, message} from 'antd';
 
 import {userColumn} from './adminTable';
-import {getUsers, addUser} from '../../services/api';
+import {getUsers, addUser, updateUserMessage} from '../../services/api';
 
 const Option = Select.Option;
 
@@ -65,18 +65,75 @@ const UserForm = Form.create() (
   }
 );
 
+const UpdateUserForm = Form.create() (
+  (props) => {
+    const { visible, onCancel, onCreate, form } = props;
+    const { getFieldDecorator } = form;
+    return (
+      <Modal
+        visible={visible}
+        title="更改信息"
+        onCancel={onCancel}
+        onOk={onCreate}
+      >
+        <Form layout="vertical">
+          <FormItem label="电话">
+            {getFieldDecorator('updatePhone', {
+              initialValue: window.sessionStorage.getItem("user_before_phone"),
+            })(
+              <Input/>
+            )}
+          </FormItem>
+          <FormItem label="QQ">
+            {getFieldDecorator('updateQq', {
+              initialValue: window.sessionStorage.getItem("user_before_qq"),
+            })(<Input/>)}
+          </FormItem>
+          <FormItem label="微信">
+            {getFieldDecorator('updateWechat', {
+              initialValue: window.sessionStorage.getItem("user_before_wechat"),
+            })(<Input/>)}
+          </FormItem>
+          <FormItem label="邮箱">
+            {getFieldDecorator('updateEmail', {
+              initialValue: window.sessionStorage.getItem("user_before_email"),
+            })(<Input/>)}
+          </FormItem>
+          <FormItem label="初始职务">
+            {getFieldDecorator('updatePosition',{
+              initialValue: window.sessionStorage.getItem("user_before_position"),
+            })(
+              <Select>
+                <Option value="2">管理员</Option>
+                <Option value="3">销售</Option>
+                <Option value="4">进货</Option>
+                <Option value="5">库管</Option>
+                <Option value="6">生产加工</Option>
+                <Option value="7">财务</Option>
+              </Select>
+            )}
+          </FormItem>
+        </Form>
+      </Modal>
+    )
+  }
+);
+
 export default class UserManagement extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
       selectedRowKeys: [],
+      selectedRows: [],
       userColumn: userColumn(),
       userData: [],
 
       loadUser: true,
       addVisible:false,
-      modifyVisible:false
+      modifyVisible:false,
+
+      updateMessageVisible: false
     };
     this.setData();
   }
@@ -105,9 +162,10 @@ export default class UserManagement extends React.Component {
     }).catch(() => {});
   }
 
-  onSelectChange(selectedRowKeys) {
+  onSelectChange(selectedRowKeys, selectedRows) {
     console.log("selectedRowKeys changed:",selectedRowKeys);
-    this.setState({selectedRowKeys});
+    console.log("selectedRows changed: ", selectedRows);
+    this.setState({selectedRowKeys, selectedRows});
   }
 
   saveFormRef = (form) => {
@@ -143,6 +201,66 @@ export default class UserManagement extends React.Component {
       }).catch(() => {
         message.warning("添加失败！");
       });
+    })
+  };
+
+  messageUpdate() {
+    let users = this.state.selectedRows;
+    if(users.length !== 1) {
+      message.warning("请选择一个用户！", 2);
+    } else {
+      window.sessionStorage.setItem("user_before_phone", users[0].phone);
+      window.sessionStorage.setItem("user_before_qq", users[0].qq_number);
+      window.sessionStorage.setItem("user_before_wechat", users[0].wechat);
+      window.sessionStorage.setItem("user_before_email", users[0].email);
+      window.sessionStorage.setItem("user_before_position", users[0].roles);
+      this.updateForm.resetFields();
+      this.setState({updateMessageVisible: true});
+    }
+  }
+  saveUpdateFormRef = (form) => {
+    this.updateForm = form;
+  };
+  handleUpdateCancel = () => {
+    this.setState({updateMessageVisible: false});
+    window.sessionStorage.removeItem("user_before_phone");
+    window.sessionStorage.removeItem("user_before_qq");
+    window.sessionStorage.removeItem("user_before_wechat");
+    window.sessionStorage.removeItem("user_before_email");
+    window.sessionStorage.removeItem("user_before_position");
+  };
+  handleUpdateCreate = () => {
+    const form = this.updateForm;
+    form.validateFields((err, values) => {
+      if(err) {
+        return;
+      }
+      let obj = {
+        user_id: this.state.selectedRows[0].userId,
+        user_name: this.state.selectedRows[0].userName,
+        phone: values.updatePhone,
+        qqnumber: values.updateQq,
+        wechat: values.updateWechat,
+        email: values.updateEmail,
+        user_roles: [values.updatePosition]
+      };
+      updateUserMessage(obj).then(resp => {
+        console.log("update user message result: ", resp.data.entity);
+        if(resp.data.entity.result === 'ok') {
+          message.success("成功更新用户信息！", 2);
+          this.setData();
+          this.setState({updateMessageVisible:false});
+          window.sessionStorage.removeItem("user_before_phone");
+          window.sessionStorage.removeItem("user_before_qq");
+          window.sessionStorage.removeItem("user_before_wechat");
+          window.sessionStorage.removeItem("user_before_email");
+          window.sessionStorage.removeItem("user_before_position");
+        } else {
+          message.warning("更新用户信息失败！", 2);
+        }
+      }).catch(() => {
+        message.warning("更新失败！", 2);
+      })
     })
   };
 
@@ -208,6 +326,12 @@ export default class UserManagement extends React.Component {
             visible={this.state.addVisible}
             onCancel={this.handleAddCancel}
             onCreate={this.handleAddCreate}
+          />
+          <UpdateUserForm
+            ref={this.saveUpdateFormRef}
+            visible={this.state.updateMessageVisible}
+            onCancel={this.handleUpdateCancel}
+            onCreate={this.handleUpdateCreate}
           />
         </div>
       </Card>
