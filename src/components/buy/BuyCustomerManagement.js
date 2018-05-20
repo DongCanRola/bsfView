@@ -67,7 +67,7 @@ const CustomerForm = Form.create() (
 
 const CustomerUpdateForm = Form.create() (
   (props) => {
-    const { visible, onCancel, onCreate, form } = props;
+    const { visible, onCancel, onCreate, form, updateOnes } = props;
     const { getFieldDecorator } = form;
     return (
       <Modal
@@ -378,6 +378,7 @@ export default class BuyCustomerManagement extends React.Component {
       window.sessionStorage.setItem("customer_buy_before_telephone", customer[0].customerTelephone);
       window.sessionStorage.setItem("customer_buy_before_email", customer[0].customerEmail);
       window.sessionStorage.setItem("customer_buy_before_address", customer[0].customerAddress);
+      this.formUpdate.resetFields();
       this.setState({updateVisible: true});
     }
   }

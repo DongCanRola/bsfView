@@ -319,6 +319,7 @@ export default class SaleCustomerManagement extends React.Component {
       window.sessionStorage.setItem("customer_before_telephone", customer[0].customerTelephone);
       window.sessionStorage.setItem("customer_before_email", customer[0].customerEmail);
       window.sessionStorage.setItem("customer_before_address", customer[0].customerAddress);
+      this.formCustomerUpdate.resetFields();
       this.setState({updateCustomerVisible: true});
     }
   }
