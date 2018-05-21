@@ -72,7 +72,8 @@ export function updateUserMessage(obj) {
     "qqnumber": obj.qqnumber,
     "wechat": obj.wechat,
     "email": obj.email
-  }
+  };
+  return put("/api/user/modify/message", headers, body);
 }
 
 function getTest() {

@@ -117,7 +117,7 @@ export default class UserManagement extends React.Component {
 
       loadUser: true,
       addVisible:false,
-      modifyVisible:false,
+      //modifyVisible:false,
 
       updateMessageVisible: false
     };
@@ -228,6 +228,7 @@ export default class UserManagement extends React.Component {
         email: values.updateEmail,
         user_roles: [values.updatePosition]
       };
+      console.log("user to update：", obj);
       updateUserMessage(obj).then(resp => {
         console.log("update user message result: ", resp.data.entity);
         if(resp.data.entity.result === 'ok') {
@@ -285,11 +286,12 @@ export default class UserManagement extends React.Component {
             style={{width: 120, marginRight: 5, marginLeft: 10}}
             onClick={
               () => {
-                this.setState({modifyVisible:true});
+                //this.setState({modifyVisible:true});
+                this.messageUpdate();
               }
             }
           >
-            修改用户身份
+            修改用户信息
           </Button>
         </div>
       }>
