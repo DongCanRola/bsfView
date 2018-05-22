@@ -1,10 +1,12 @@
 import React from 'react';
 import {Menu, Icon, Input, Modal, message, Form} from 'antd';
 import screenfull from 'screenfull';
-import {browserHistory} from 'dva/router'
+import {Link, browserHistory} from 'dva/router'
 import md5 from 'js-md5'
 //import {modifyPassword} from "../../services/adminApi";
 import {modifyUserPassword} from '../../services/api';
+
+import {getPath} from '../../routes/RouterHash';
 
 const MenuItemGroup = Menu.ItemGroup;
 
@@ -26,8 +28,13 @@ var HeaderInfo = React.createClass({
       password: '',
       oldPassword: '',
       passwordConfirm: '',
-      modifyPassword: false
+      modifyPassword: false,
+      userRoles: []
     };
+  },
+
+  componentDidMount() {
+    this.setUserRole();
   },
 
   changePassword: function () {
@@ -94,6 +101,20 @@ var HeaderInfo = React.createClass({
 
   },
 
+  setUserRole() {
+    let roles = window.sessionStorage.getItem("allRoles");
+    let option = [];
+    for(let role of roles) {
+      option.push({
+        id: role,
+        name: getPath(role)
+      });
+    }
+    this.setState({
+      userRoles: option
+    });
+  },
+
   propTypes: {
     role: React.PropTypes.string.isRequired,
   },
@@ -110,6 +131,9 @@ var HeaderInfo = React.createClass({
         sm: {span: 14},
       },
     };
+
+    const roles = this.state.userRoles;
+
     return (
       <div className="header" style={{lineHeight: '44px'}}>
 
@@ -143,6 +167,30 @@ var HeaderInfo = React.createClass({
                    }}>设置密码</span>
               </Menu.Item>
               {/*<Menu.Item key="setting:4">系统设置</Menu.Item>*/}
+            </MenuItemGroup>
+            <MenuItemGroup title="切换身份">
+              {
+                roles.map((role) => {
+                  let name = '';
+                  let roleId = role.id;
+                  let roleName = role.name;
+                  switch(roleId) {
+                    case '2': name = "管理员";break;
+                    case '3': name = "销售";break;
+                    case '4': name = "进货";break;
+                    case '5': name = "仓库管理";break;
+                    case '6': name = "生产";break;
+                    case '7': name = "财务管理";break;
+                  }
+                  return (
+                    <Menu.Item key={roleId+"role"}>
+                      <Link to={roleName}>
+                        <span>{name}</span>
+                      </Link>
+                    </Menu.Item>
+                  )
+                })
+              }
             </MenuItemGroup>
           </SubMenu>
 

@@ -29,11 +29,12 @@ const Login = Form.create()(React.createClass({
             //console.log("role",resp.data.entity.data.user_roles);
             let realName = resp.data.entity.data.user_name;
             let path = getPath(role);
-            if(path != null) {
+            if(path !== null) {
               window.sessionStorage.setItem("userId",username);
               window.sessionStorage.setItem("realName",resp.data.entity.data.user_name);
               window.sessionStorage.setItem("allRoles",resp.data.entity.data.user_roles);
               window.sessionStorage.setItem("currentRole",role);
+              console.log("roles", resp.data.entity.data.user_roles);
               browserHistory.push(path);
               message.success(realName+"，欢迎登录！", 4);
             }
