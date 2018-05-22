@@ -303,6 +303,16 @@ export default class UserManagement extends React.Component {
           >
             修改用户信息
           </Button>
+          <Button
+            style={{width: 120, marginRight: 5, marginLeft: 10}}
+            onClick={
+              () => {
+                this.changeRoles();
+              }
+            }
+          >
+            修改用户职责
+          </Button>
         </div>
       }>
         <Table

@@ -58,6 +58,7 @@ export default class UserRoleManagement extends React.Component {
       user_id: window.sessionStorage.getItem("user_modify_role_id"),
       user_roles: this.state.selectedRowKeys
     };
+    console.log("new user role: ", obj);
     modifyUserRoles(obj).then(resp => {
       console.log("update user roles result: ", resp.data.entity);
       if(resp.data.entity.result === 'ok') {
