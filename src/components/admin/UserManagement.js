@@ -3,6 +3,7 @@
  */
 import React from 'react';
 import {Card, Button, Table, Form, Modal, Input, Select, message} from 'antd';
+import { Router, Route,IndexRoute,hashHistory,browserHistory } from 'dva/router';
 
 import {userColumn} from './adminTable';
 import {getUsers, addUser, updateUserMessage} from '../../services/api';
@@ -248,6 +249,16 @@ export default class UserManagement extends React.Component {
     })
   };
 
+  changeRoles() {
+    let users = this.state.selectedRows;
+    if(users.length !== 1) {
+      message.warning("请选择一个用户！", 2);
+    } else {
+      window.sessionStorage.setItem("user_modify_role_id", users[0].userId);
+      browserHistory.push({pathname: '/userRoleManagement'});
+    }
+  }
+
   render() {
     const pagination = {
       total: this.state.userData.length,
@@ -264,8 +275,7 @@ export default class UserManagement extends React.Component {
 
     const rowSelection = {
       selectedRowKeys,
-      onChange: this.onSelectChange.bind(this),
-      type:'radio'
+      onChange: this.onSelectChange.bind(this)
     };
 
     return (

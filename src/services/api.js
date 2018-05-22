@@ -76,6 +76,17 @@ export function updateUserMessage(obj) {
   return put("/api/user/modify/message", headers, body);
 }
 
+export function modifyUserRoles(obj) {
+  let headers = new Headers();
+  headers.append('Content-Type', "application/json");
+  headers.append('Accept', 'application/json');
+  let body = {
+    "user_id": obj.user_id,
+    "user_roles": obj.user_roles
+  };
+  return put("/api/user/modify/roles", headers, body);
+}
+
 function getTest() {
   var headers = new Headers();
   headers.append("Content-Type","application/json");

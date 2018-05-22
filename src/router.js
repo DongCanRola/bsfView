@@ -6,6 +6,7 @@ import Login from './routes/Login';
 
 import Admin from './routes/Admin';
 import UserManagement from './components/admin/UserManagement';
+import UserRoleManagement from './components/admin/UserRoleManagement';
 
 import Salesman from './routes/Salesman';
 import SaleCustomerManagement from './components/sale/SaleCustomerManagement';
@@ -88,6 +89,7 @@ function RouterConfig({ history }) {
 
       <Route path="/admin" component={Admin} >
         <Route path="/userManagement" component={UserManagement}/>
+        <Route path="/userRoleManagement" component={UserRoleManagement}/>
       </Route>
 
       <Route path="/salesman" component={Salesman}>
